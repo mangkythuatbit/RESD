@@ -563,7 +563,7 @@ def footer():
       <h4>Hành trình</h4> 
       <ul> 
         <li><a href="gioi-thieu.html">R.E.S.D là gì</a></li> 
-        <li><a href="gioi-thieu.html#so-sanh">So sánh bốn ban</a></li> 
+        <li><a href="gioi-thieu.html#so-sanh">Khám phá bốn ban</a></li>
         <li><a href="test-dinh-huong.html">Test định hướng</a></li> 
         <li><a href="lien-he.html">Câu hỏi thường gặp</a></li> 
       </ul> 
@@ -1106,8 +1106,8 @@ def build_intro():
 
     <section class="section" id="so-sanh">
       <div class="container">
-        {section_head("So sánh", "Bốn ban đặt cạnh nhau",
-                      "Bảng này để bạn thấy khác biệt thật giữa các ban trước khi quyết định. Cuộn ngang để xem hết trên điện thoại.")}
+        {section_head("Khám phá", "Bốn ban đặt cạnh nhau",
+                      "Bảng này để bạn thấy khác biệt thật giữa các ban trước khi quyết định.")}
         <div class="compare-wrap reveal">
           <table class="compare">
             <thead><tr><th scope="col">Tiêu chí</th>{thead}</tr></thead>
