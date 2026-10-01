@@ -395,7 +395,7 @@ BANS = [
                           "lại là một kỹ năng hoàn toàn khác.",
                      "who": "Chờ cập nhật", "role": "Thành viên mảng Học tập"},
                 ],
-                "people": [("", "Trưởng mảng"), ("", "Thành viên"), ("", "Thành viên")],
+                "people": [("Nguyễn Thị Thúy Vân", "Trưởng ban"), ("Nguyễn Hồng Phúc", "Phó ban"), ("Nguyễn Đinh Thảo Nhi", "Phó ban")],
             },
             {
                 "code": "NCKH", "id": "nckh", "name": "Nghiên cứu khoa học",
@@ -421,7 +421,7 @@ BANS = [
                           "nói ra một điều mình chưa từng nghĩ tới thì rất đáng.",
                      "who": "Chờ cập nhật", "role": "Thành viên mảng NCKH"},
                 ],
-                "people": [("", "Trưởng mảng"), ("", "Thành viên"), ("", "Thành viên")],
+                "people": [("Nguyễn Thị Thúy Vân", "Trưởng ban"), ("Nguyễn Hồng Phúc", "Phó ban"), ("Nguyễn Đinh Thảo Nhi", "Phó ban")],
             },
         ],
     },
