@@ -613,10 +613,34 @@
       logo.crossOrigin = "anonymous"; // Thêm để tránh lỗi CORS nếu bạn có chức năng tải/lưu ảnh về máy
       logo.src = "./assets/images/logo-khoa-trang.png"; // <-- THAY LINK LOGO CỦA BẠN VÀO ĐÂY
       logo.onload = () => {
-        const logoSize = 80; // Kích thước logo vừa phải (có thể chỉnh to/nhỏ tùy ý)
-        // W = 1080, lề phải 96, nên tọa độ x = W - 96 - logoSize
-        // Tọa độ y = 110 (căn giữa dọc theo 2 dòng chữ header phía trên)
-        ctx.drawImage(logo, W - 96 - logoSize, 110, logoSize, logoSize);
+        // Giới hạn kích thước tối đa của logo trên thẻ
+        const maxHeight = 80;
+        const maxWidth = 200; 
+        
+        // Lấy kích thước gốc
+        let targetWidth = logo.width;
+        let targetHeight = logo.height;
+        
+        // 1. Tính toán tỷ lệ: Ưu tiên thu nhỏ theo chiều cao (maxHeight)
+        if (targetHeight > maxHeight || targetHeight <= maxHeight) {
+          targetWidth = targetWidth * (maxHeight / targetHeight);
+          targetHeight = maxHeight;
+        }
+        
+        // 2. Nếu thu theo chiều cao mà chiều rộng vẫn vượt maxWidth, thu tiếp theo chiều rộng
+        if (targetWidth > maxWidth) {
+          targetHeight = targetHeight * (maxWidth / targetWidth);
+          targetWidth = maxWidth;
+        }
+
+        // Tính tọa độ X: Căn mép phải, luôn cách lề phải 96px
+        const x = W - 96 - targetWidth;
+        
+        // Tính tọa độ Y: Căn giữa theo trục dọc với dòng chữ tiêu đề (Tâm Y ~ 150)
+        const y = 150 - (targetHeight / 2);
+
+        // Vẽ ảnh lên canvas với kích thước đã được tính toán chuẩn tỷ lệ
+        ctx.drawImage(logo, x, y, targetWidth, targetHeight);
       };
       // =========================================================================
 
