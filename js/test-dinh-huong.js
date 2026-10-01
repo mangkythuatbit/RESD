@@ -716,9 +716,9 @@
 
       ctx.fillStyle = "#8296ad";
       ctx.font = font(24, 400);
-      ctx.fillText("Kết quả mang tính tham khảo, không thay cho buổi phỏng vấn.", 96, H - 118);
+      ctx.fillText("Kết quả trắc nghiệm mang tính chất tham khảo, Đoàn - Hội luôn trân trọng mọi màu sắc và tiềm năng thực tế của các BIT-ers.", 96, H - 118);
       ctx.fillStyle = "#7ae9ed";
-      ctx.fillText("✦ Mỗi sắc màu. Một hành trình toả sáng.", 96, H - 76);
+      ctx.fillText("✦ Về với BIT nhé các Tí yêu ơi!", 96, H - 76);
     };
 
     const safePaint = () => { try { paint(); } catch (err) { /* thẻ ảnh là phần phụ */ } };
