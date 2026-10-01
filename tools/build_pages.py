@@ -62,7 +62,7 @@ BANS = [
         "soft": "#6fa8ff22",
         "name": "Ban Tổ chức - Xây dựng",
         "short": "TC-XD",
-        "tagline": "Một chương trình bắt đầu từ trước khi có khán giả đầu tiên. "
+        "tagline": "Một chương sách được trau dồi, gắn kết từ trong ra ngoài, và được vận hành trơn tru. "
                    "Tổ chức - Xây dựng là nơi dựng phần đó: con người, nguồn lực và sân khấu.",
         "mission": [
             "Ban Tổ chức - Xây dựng là ban quản lý và gắn kết nhân sự; đồng thời xây dựng, duy trì mối quan hệ "

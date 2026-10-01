@@ -537,6 +537,7 @@
   let lastResult = null;
 
   /* --- Vẽ ảnh kết quả bằng canvas -------------------------------------- */
+/* --- Vẽ ảnh kết quả bằng canvas -------------------------------------- */
   const canvas = root.querySelector("[data-result-canvas]");
 
   function drawCard(r, type, topBan, topMang) {
@@ -604,6 +605,20 @@
       ctx.fillStyle = "#8296ad";
       ctx.font = font(24, 400);
       ctx.fillText("Đoàn - Hội khoa Công nghệ thông tin kinh doanh", 96, 182);
+
+      // =========================================================================
+      // [PHẦN THÊM MỚI] Vẽ Logo ở góc phải header
+      // =========================================================================
+      const logo = new Image();
+      logo.crossOrigin = "anonymous"; // Thêm để tránh lỗi CORS nếu bạn có chức năng tải/lưu ảnh về máy
+      logo.src = "./assets/images/logo-khoa-trang.png"; // <-- THAY LINK LOGO CỦA BẠN VÀO ĐÂY
+      logo.onload = () => {
+        const logoSize = 80; // Kích thước logo vừa phải (có thể chỉnh to/nhỏ tùy ý)
+        // W = 1080, lề phải 96, nên tọa độ x = W - 96 - logoSize
+        // Tọa độ y = 110 (căn giữa dọc theo 2 dòng chữ header phía trên)
+        ctx.drawImage(logo, W - 96 - logoSize, 110, logoSize, logoSize);
+      };
+      // =========================================================================
 
       // Mã
       ctx.fillStyle = topBan.color;
