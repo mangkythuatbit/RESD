@@ -65,7 +65,7 @@ BANS = [
         "tagline": "Một chương trình bắt đầu từ trước khi có khán giả đầu tiên. "
                    "Tổ chức - Xây dựng là nơi dựng phần đó: con người, nguồn lực và sân khấu.",
         "mission": [
-            "Sapphire là ban quản lý và gắn kết nhân sự; đồng thời xây dựng, duy trì mối quan hệ "
+            "Ban Tổ chức - Xây dựng là ban quản lý và gắn kết nhân sự; đồng thời xây dựng, duy trì mối quan hệ "
             "với nhà tài trợ và các Câu lạc bộ, Đội, Nhóm khác.",
             "Ba mảng Nhân sự, Đối ngoại và Kỹ thuật cùng tạo nên nền vận hành cho các hoạt động "
             "của Đoàn - Hội khoa.",
@@ -188,12 +188,12 @@ BANS = [
         "name": "Ban Phong trào - Tình nguyện",
         "short": "PT-TN",
         "tagline": "Phần đời sinh viên mà sau này người ta kể lại nhiều nhất thường nằm ở đây: "
-                   "một sân chơi, một chuyến đi, một buổi tối cả khoa cùng hát.",
+                   "một sân chơi, một chuyến đi, một buổi tối để nhớ nhau nhiều hơn.",
         "mission": [
-            "Diamond tạo ra không khí. Ban giữ cho đời sống sinh viên BIT không chỉ có lịch học, "
+            "Ban Phong trào - Tình nguyện tạo ra không khí. Ban giữ cho đời sống sinh viên BIT không chỉ có lịch học, "
             "bằng những sân chơi đủ vui để người ta rủ nhau đi.",
-            "Đồng thời ban đưa sinh viên ra khỏi giảng đường: các chiến dịch tình nguyện là chỗ "
-            "kỹ năng tổ chức được thử trong điều kiện thật, với hệ quả thật.",
+            "Đồng thời ban đóng vai trò chủ chốt trong các hoạt động tình nguyện, phong trào cấp khoa và cấp UEH "
+            "góp phần kiến tạo cộng đồng sinh viên năng động, sáng tạo và có trách nhiệm.",
         ],
         "duties": [
             "<b>Tổ chức hoạt động phong trào</b>: thể thao, văn hoá, văn nghệ dành cho sinh viên.",
@@ -243,7 +243,7 @@ BANS = [
         "tagline": "Một hoạt động không được kể lại thì chỉ tồn tại với những người có mặt. "
                    "Truyền thông là nơi biến nó thành thứ người khác muốn tham gia lần sau.",
         "mission": [
-            "Ruby giữ giọng nói và gương mặt của Đoàn - Hội BIT. Từ một dòng caption tới một "
+            "Ban Truyền thông giữ giọng nói và gương mặt của Đoàn - Hội BIT. Từ một dòng caption tới một "
             "bộ ấn phẩm, ban quyết định người ngoài nhìn thấy gì khi họ gặp khoa lần đầu.",
             "Ban cũng là nơi lưu lại ký ức: mỗi tấm ảnh, mỗi thước phim là tài sản của khoá này "
             "để lại cho khoá sau.",
@@ -341,7 +341,7 @@ BANS = [
         "short": "HT-NCKH",
         "tagline": "Emerald biến việc học thành năng lực và sự tò mò thành những đề tài nghiên cứu có giá trị.",
         "mission": [
-            "Emerald biến kiến thức rời rạc thành thứ dùng được: tài liệu ôn tập, workshop kỹ năng, "
+            "Ban Học tập - Nghiên cứu khoa học biến kiến thức rời rạc thành thứ dùng được: tài liệu ôn tập, workshop kỹ năng, "
             "và những buổi chia sẻ từ người đã đi trước.",
             "Ban cũng là cửa vào nghiên cứu khoa học cho sinh viên BIT — nơi một câu hỏi tò mò "
             "có thể lớn thành một đề tài thật, có cố vấn và có hội đồng.",
@@ -815,7 +815,7 @@ def build_ban(ban):
 
     <section class="section">
       <div class="container">
-        {section_head("Sứ mệnh", "Ban này tồn tại để làm gì")}
+        {section_head("Sứ mệnh", "Nhiệm vụ chung của ban", "Đọc kỹ phần này trước khi quyết định nguyện vọng.")}
         <div class="row gy-4">
           <div class="col-lg-7 reveal">{mission}</div>
           <div class="col-lg-5">
