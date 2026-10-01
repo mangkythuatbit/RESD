@@ -716,7 +716,7 @@
 
       ctx.fillStyle = "#8296ad";
       ctx.font = font(24, 400);
-      ctx.fillText("Kết quả trắc nghiệm mang tính chất tham khảo, BIT luôn trân trọng mọi màu sắc và tiềm năng thực tế của các BIT-ers.", 96, H - 118);
+      ctx.fillText("Kết quả trắc nghiệm mang tính chất tham khảo, không phải quyết định duy nhất", 96, H - 118);
       ctx.fillStyle = "#7ae9ed";
       ctx.fillText("✦ Về với BIT nhé các Tí yêu ơi!", 96, H - 76);
     };
