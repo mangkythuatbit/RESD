@@ -34,11 +34,7 @@ PLACEHOLDER_NAME = "Chờ cập nhật"
 
 
 def draft_flag(voices):
-    """Trả về nhãn 'chờ duyệt' nếu còn ít nhất một lời nhắn chưa có tên thật.
-
-    Nhờ vậy khi Ban chuyên môn thay hết bằng phát ngôn thật, nhãn tự biến mất
-    mà không phải đi xoá thủ công. Xem docs/content-guide.md.
-    """
+    """Trả về nhãn 'chờ duyệt' nếu còn ít nhất một lời nhắn chưa có tên thật."""
     if any((v.get("who") or "").strip() in ("", PLACEHOLDER_NAME) for v in voices):
         return DRAFT
     return ""
@@ -80,11 +76,14 @@ BANS = [
         ],
         "programs": [
             {"name": "Chào đón Tân sinh viên", "meta": "Gắn kết",
-             "desc": "Cầu nối giúp sinh viên khóa mới làm quen môi trường học tập, tìm hiểu chuyên ngành và khám phá hoạt động Đoàn - Hội."},
+             "desc": "Cầu nối giúp sinh viên khóa mới làm quen môi trường học tập, tìm hiểu chuyên ngành và khám phá hoạt động Đoàn - Hội.",
+             "img": "assets/images/programs/tcxd-chao-tan-sinh-vien.jpg"},
             {"name": "Hoạt động nội bộ", "meta": "Nhân sự",
-             "desc": "Lễ kỷ niệm, sinh nhật và các buổi training kỹ năng dành cho thành viên."},
+             "desc": "Lễ kỷ niệm, sinh nhật và các buổi training kỹ năng dành cho thành viên.",
+             "img": "assets/images/programs/tcxd-hoat-dong-noi-bo.jpg"},
             {"name": "Sản phẩm số Đoàn - Hội BIT", "meta": "Kỹ thuật",
-             "desc": "Quản lý và phát triển các sản phẩm số, website Đoàn - Hội khoa BIT."},
+             "desc": "Quản lý và phát triển các sản phẩm số, website Đoàn - Hội khoa BIT.",
+             "img": "assets/images/programs/tcxd-san-pham-so.jpg"},
         ],
         "must": ["Giao tiếp tốt", "Chủ động trong công việc", "Làm việc nhóm", "Tinh thần trách nhiệm cao"],
         "plus": ["Viết email", "Mail merge / Mailchimp", "Từng vận động gây quỹ", "Hiểu cơ bản cấu thành trang web"],
@@ -92,10 +91,10 @@ BANS = [
         "voices": [
             {"q": "Mình vào ban vì nghĩ tổ chức sự kiện là chạy quanh sân khấu. Hoá ra phần khó nhất "
                   "là ngồi trước một file phân công và tưởng tượng ra hết những gì có thể hỏng.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Tổ chức - Xây dựng"},
+             "who": "Tập thể Ban", "role": "Ban Tổ chức - Xây dựng"},
             {"q": "Cảm giác đứng cuối hội trường nhìn chương trình chạy đúng kịch bản mình dựng, "
                   "không ai biết mình là ai, mà vẫn thấy đáng.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Tổ chức - Xây dựng"},
+             "who": "Tập thể Ban", "role": "Ban Tổ chức - Xây dựng"},
         ],
         "people": [("Lê Bảo Ngọc", "Trưởng ban"), ("Huỳnh Bảo Nhi", "Trưởng mảng Nhân sự"),("Nguyễn Võ Lan Thanh", "Phó mảng Nhân sự"), ("Phạm Thị Ngọc Diệu", "Trưởng mảng Đối ngoại"), ("Lê Viết Bảo", "Trưởng mảng Kỹ thuật")],
         "mangs": [
@@ -109,18 +108,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Các đợt tuyển Cộng tác viên, Ban Chấp hành", "meta": "Định kỳ hàng năm",
-                     "desc": "Từ mở đơn tới buổi gặp mặt đầu tiên của thành viên mới."},
+                     "desc": "Từ mở đơn tới buổi gặp mặt đầu tiên của thành viên mới.",
+                     "img": "assets/images/programs/tcxd-ns-tuyen-ctv.jpg"},
                     {"name": "Rèn luyện kỹ năng chuyên môn nội bộ", "meta": "Định kỳ",
-                     "desc": "Các buổi chia sẻ ngắn về tổ chức sự kiện, giao tiếp và làm việc nhóm."},
+                     "desc": "Các buổi chia sẻ ngắn về tổ chức sự kiện, giao tiếp và làm việc nhóm.",
+                     "img": "assets/images/programs/tcxd-ns-training.jpg"},
                     {"name": "Các hoạt động nội bộ gắn kết", "meta": "Gắn kết",
-                     "desc": "Giữ lửa cho đội khi lịch học và lịch hoạt động bắt đầu chồng nhau."},
+                     "desc": "Giữ lửa cho đội khi lịch học và lịch hoạt động bắt đầu chồng nhau.",
+                     "img": "assets/images/programs/tcxd-ns-teambuilding.jpg"},
                 ],
                 "must": ["Giao tiếp rõ ràng", "Giữ bí mật thông tin cá nhân", "Công bằng", "Chủ động hỏi han"],
                 "plus": ["Từng làm lớp trưởng / ban cán sự", "Quen Google Sheets", "Tổ chức trò chơi tập thể"],
                 "voices": [
                     {"q": "Việc khó nhất không phải xếp lịch, mà là nhắn cho một bạn đã im lặng hai tuần "
                           "và hỏi bạn ấy có ổn không.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng Nhân sự"},
+                     "who": "Tập thể mảng", "role": "mảng Nhân sự"},
                 ],
                 "people": [("Huỳnh Bảo Nhi", "Trưởng mảng"), ("Nguyễn Võ Lan Thanh", "Phó mảng")],
             },
@@ -135,18 +137,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Hồ sơ tài trợ chương trình", "meta": "Theo mùa sự kiện",
-                     "desc": "Xây bộ hồ sơ từ ý tưởng chương trình thành đề xuất mà doanh nghiệp đọc được."},
+                     "desc": "Xây bộ hồ sơ từ ý tưởng chương trình thành đề xuất mà doanh nghiệp đọc được.",
+                     "img": "assets/images/programs/tcxd-dn-ho-so.jpg"},
                     {"name": "Kết nối bảo trợ chuyên môn", "meta": "Dài hạn",
-                     "desc": "Đảm bảo mối quan hệ chuyên môn bền vững cho các chương trình trọng điểm"},
+                     "desc": "Đảm bảo mối quan hệ chuyên môn bền vững cho các chương trình trọng điểm",
+                     "img": "assets/images/programs/tcxd-dn-bao-tro.jpg"},
                     {"name": "Cộng tác cùng các khách mời", "meta": "Sau mỗi chương trình",
-                     "desc": "Xây dựng mối quan hệ với khách mời, diễn giả và các đơn vị hợp tác trong chương trình."},
+                     "desc": "Xây dựng mối quan hệ với khách mời, diễn giả và các đơn vị hợp tác trong chương trình.",
+                     "img": "assets/images/programs/tcxd-dn-khach-moi.jpg"},
                 ],
                 "must": ["Không ngại mở lời trước", "Viết email lịch sự", "Giữ lời hứa", "Kiên trì theo đuổi"],
                 "plus": ["Tiếng Anh giao tiếp", "Biết làm proposal", "Từng đi xin tài trợ", "Mạng lưới quan hệ rộng"],
                 "voices": [
                     {"q": "Mình gửi hai mươi thư ngỏ và nhận về hai lời hẹn. Lúc đó mới hiểu "
                           "vì sao mảng này cần lì hơn cần giỏi nói.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng Đối ngoại"},
+                     "who": "Tập thể mảng", "role": "mảng Đối ngoại"},
                 ],
                 "people": [("Phạm Thị Ngọc Diệu", "Trưởng mảng"), ("Nguyễn Thu Trang", "Phó mảng"), ("Võ Trần Ngọc Ánh", "Phó mảng")],
             },
@@ -161,18 +166,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Dự án website Lửa dệt Sử đỏ", "meta": "Sản phẩm số",
-                     "desc": "Phát triển, cập nhật và bảo trì kênh thông tin các hoạt động về nguồn của Đoàn - Hội khoa."},
+                     "desc": "Phát triển, cập nhật và bảo trì kênh thông tin các hoạt động về nguồn của Đoàn - Hội khoa.",
+                     "img": "assets/images/programs/tcxd-kt-lua-det-su-do.jpg"},
                     {"name": "Chuyên đề chia sẻ nội bộ về UI/UX", "meta": "Chuyên môn",
-                     "desc": "Chia sẻ kinh nghiệm về các học phần cơ sở ngành tại UEH cho thành viên trong ban."},
+                     "desc": "Chia sẻ kinh nghiệm về các học phần cơ sở ngành tại UEH cho thành viên trong ban.",
+                     "img": "assets/images/programs/tcxd-kt-uiux.jpg"},
                     {"name": "Dự án chuyển đổi số xã Tân Vĩnh Lộc", "meta": "Cộng tác kỹ thuật",
-                     "desc": "Cộng tác cùng đơn vị xã thực hiện cải tiến hành chính."},
+                     "desc": "Cộng tác cùng đơn vị xã thực hiện cải tiến hành chính.",
+                     "img": "assets/images/programs/tcxd-kt-chuyen-doi-so.jpg"},
                 ],
                 "must": ["Cẩn thận với công cụ và dữ liệu", "Chịu học công nghệ mới", "Đúng deadline", "Bình tĩnh xử lý sự cố kỹ thuật"],
                 "plus": ["Biết HTML/CSS/JS cơ bản", "Quen Google Workspace / Sheets", "Nắm chắc học phần cơ sở ngành", "Từng vận hành website hoặc công cụ nội bộ"],
                 "voices": [
                     {"q": "Không ai để ý mảng Kỹ thuật cho tới khi trang web lỗi giữa đợt tuyển. "
                           "Việc của mình là làm sao để không ai phải để ý tới điều đó.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng Kỹ thuật"},
+                     "who": "Những người con yêu tinh", "role": "Tập thể mảng Kỹ thuật"},
                 ],
                 "people": [("Hồ Thị Diễm Trang", "Trưởng mảng"), ("Đinh Viết Quân", "Phó mảng")],
             },
@@ -204,31 +212,33 @@ BANS = [
         ],
         "programs": [
             {"name": "Hội trại Truyền thống", "meta": "Văn hoá - văn nghệ - thể thao",
-             "desc": "Sân chơi gắn kết giúp sinh viên khóa mới hòa nhập, thể hiện cá tính và sáng tạo."},
+             "desc": "Sân chơi gắn kết giúp sinh viên khóa mới hòa nhập, thể hiện cá tính và sáng tạo.",
+             "img": "assets/images/programs/pttn-hoi-trai.jpg"},
             {"name": "Việt Phục 2025: Hành trình xuyên thời gian", "meta": "Văn hoá",
-             "desc": "Chương trình giúp sinh viên tìm hiểu lịch sử, nguồn gốc Việt phục và sự sáng tạo trong trang phục truyền thống."},
+             "desc": "Chương trình giúp sinh viên tìm hiểu lịch sử, nguồn gốc Việt phục và sự sáng tạo trong trang phục truyền thống.",
+             "img": "assets/images/programs/pttn-viet-phuc.jpg"},
             {"name": "UEH League", "meta": "Thể thao",
-             "desc": "Hoạt động thể thao trong nhóm chương trình văn hóa - văn nghệ - thể thao của ban."},
+             "desc": "Hoạt động thể thao trong nhóm chương trình văn hóa - văn nghệ - thể thao của ban.",
+             "img": "assets/images/programs/pttn-ueh-league.jpg"},
             {"name": "Xuân tình nguyện", "meta": "Tình nguyện vì cộng đồng",
-             "desc": "Chiến dịch mang đến những hoạt động ý nghĩa, giúp đỡ các hoàn cảnh kém may mắn trong dịp xuân."},
+             "desc": "Chiến dịch mang đến những hoạt động ý nghĩa, giúp đỡ các hoàn cảnh kém may mắn trong dịp xuân.",
+             "img": "assets/images/programs/pttn-xuan-tinh-nguyen.jpg"},
             {"name": "Vui hội Trăng Rằm", "meta": "Tình nguyện vì cộng đồng",
-             "desc": "Hoạt động dịp Trung thu dành cho trẻ em có hoàn cảnh khó khăn, hướng tới một mùa Trung thu trọn vẹn."},
+             "desc": "Hoạt động dịp Trung thu dành cho trẻ em có hoàn cảnh khó khăn, hướng tới một mùa Trung thu trọn vẹn.",
+             "img": "assets/images/programs/pttn-trung-thu.jpg"},
             {"name": "Mùa hè xanh", "meta": "Tình nguyện vì cộng đồng",
-             "desc": "Chiến dịch tình nguyện thường niên của Đoàn Thanh niên - Hội Sinh viên UEH."},
+             "desc": "Chiến dịch tình nguyện thường niên của Đoàn Thanh niên - Hội Sinh viên UEH.",
+             "img": "assets/images/programs/pttn-mua-he-xanh.jpg"},
         ],
         "must": ["Nhiệt huyết, năng động", "Tư duy sáng tạo", "Lên kế hoạch", "Linh động xử lý tình huống"],
         "plus": ["Giao tiếp tốt", "Làm việc nhóm", "Nắm bắt xu hướng", "Dễ hòa nhập và sẻ chia"],
         "stats": [("Trọng điểm", "Các chiến dịch tình nguyện"), ("Đa dạng", "không gian phong trào"), ("Diamond", "viên đá đại diện")],
         "voices": [
-            {"q": "Vui thì có vui, nhưng đằng sau một trận bóng là bảng phân trọng tài, "
-                  "nước uống, băng gạc và một người phải nhớ hết.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Phong trào - Tình nguyện"},
-            {"q": "Chuyến tình nguyện đầu tiên dạy mình rằng nhiệt tình mà không có kế hoạch "
-                  "thì chỉ làm phiền người ở địa phương.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Phong trào - Tình nguyện"},
+            {"q": "Chuyến tình nguyện đầu tiên dạy mình rằng đến với một nơi xa lạ"
+                  ", không phải để làm thay cho người ta, mà là để cùng họ làm. ",
+             "who": "Tập thể Ban", "role": "Ban Phong trào - Tình nguyện"},
         ],
         "people": [("Đỗ Trọng Khanh", "Trưởng ban"),("Trần Thị Ngọc Lan", "Trưởng ban"),("Dương Thúy Hiền", "Phó ban"), ("Hồ Minh Khang", "Phó ban")],
-        # PT-TN là một ban thống nhất, không chia thành hai mảng Phong trào/Tình nguyện.
         "mangs": [],
     },
     {
@@ -256,11 +266,14 @@ BANS = [
         ],
         "programs": [
             {"name": "Radio Não Cá vàng", "meta": "Podcast thu âm",
-             "desc": "Podcast chia sẻ kinh nghiệm học tập, kỹ năng mềm và đời sống sinh viên BIT."},
+             "desc": "Podcast chia sẻ kinh nghiệm học tập, kỹ năng mềm và đời sống sinh viên BIT.",
+             "img": "assets/images/programs/tt-radio.jpg"},
             {"name": "Chuỗi truyền thông Đoàn - Hội khoa", "meta": "Truyền thông sáng tạo",
-             "desc": "Các bài đăng, video và ấn phẩm truyền thông cho các chương trình, hoạt động của khoa."},
+             "desc": "Các bài đăng, video và ấn phẩm truyền thông cho các chương trình, hoạt động của khoa.",
+             "img": "assets/images/programs/tt-chuoi-truyen-thong.jpg"},
             {"name": "Phụ trách công tác truyền thông chương trình các ban", "meta": "IDEA",
-             "desc": "Hỗ trợ các ban chuyên môn khác trong việc lên ý tưởng, thiết kế và vận hành truyền thông cho chương trình."},
+             "desc": "Hỗ trợ các ban chuyên môn khác trong việc lên ý tưởng, thiết kế và vận hành truyền thông cho chương trình.",
+             "img": "assets/images/programs/tt-ho-tro.jpg"},
         ],
         "must": ["Chịu được deadline gấp", "Nhận góp ý mà không tự ái", "Chỉn chu chính tả", "Đúng hẹn giao bài"],
         "plus": ["Canva / Adobe", "Viết tốt", "Chụp ảnh", "Dựng video", "Hiểu thuật toán mạng xã hội"],
@@ -282,18 +295,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Phụ trách các tuyến bài chương trình", "meta": "Định kỳ",
-                     "desc": "Các bài đăng, caption, thông cáo và ấn phẩm truyền thông cho các chương trình, hoạt động của khoa."},
+                     "desc": "Các bài đăng, caption, thông cáo và ấn phẩm truyền thông cho các chương trình, hoạt động của khoa.",
+                     "img": "assets/images/programs/tt-idea-tuyen-bai.jpg"},
                     {"name": "Sáng tạo kịch bản video", "meta": "Phối hợp DEP",
-                     "desc": "Từ outline tới lời thoại cuối cùng trước khi quay."},
+                     "desc": "Từ outline tới lời thoại cuối cùng trước khi quay.",
+                     "img": "assets/images/programs/tt-idea-kich-ban.jpg"},
                     {"name": "Tham gia sáng tác podcast", "meta": "Radio, podcast",
-                     "desc": "Các tập podcast chia sẻ kinh nghiệm học tập, kỹ năng mềm và đời sống sinh viên BIT."},
+                     "desc": "Các tập podcast chia sẻ kinh nghiệm học tập, kỹ năng mềm và đời sống sinh viên BIT.",
+                     "img": "assets/images/programs/tt-idea-podcast.jpg"},
                 ],
                 "must": ["Viết đúng chính tả", "Đọc kỹ đề bài", "Giao bài đúng hạn", "Chịu sửa nhiều vòng"],
                 "plus": ["Từng viết cho page hoặc báo trường", "Biết SEO cơ bản", "Viết được tiếng Anh", "Có gu đọc rộng"],
                 "voices": [
                     {"q": "Câu mình tâm đắc nhất thường là câu bị cắt đầu tiên. "
                           "Viết cho người đọc chứ không viết cho mình.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng IDEA"},
+                     "who": "Những người yêu deadline", "role": "Thành viên mảng IDEA"},
                 ],
                 "people": [
                   ("Hoàng Kim Tùng", "Trưởng ban"), ("Lê Viết Bảo", "Phó ban"), ("Nguyễn Thị Ánh Hằng", "Phó ban")],
@@ -310,18 +326,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Chuỗi truyền thông Sinh viên 5 tốt", "meta": "Truyền thông",
-                     "desc": "Các ấn phẩm truyền thông cho phong trào Sinh viên 5 tốt của khoa."},
+                     "desc": "Các ấn phẩm truyền thông cho phong trào Sinh viên 5 tốt của khoa.",
+                     "img": "assets/images/programs/tt-dep-sv5t.jpg"},
                     {"name": "Chiến dịch Xuân tình nguyện 2026: Gom nắng gieo xuân", "meta": "Truyền thông",
-                     "desc": "Các ấn phẩm truyền thông cho chiến dịch Xuân tình nguyện 2026 của khoa."},
+                     "desc": "Các ấn phẩm truyền thông cho chiến dịch Xuân tình nguyện 2026 của khoa.",
+                     "img": "assets/images/programs/tt-dep-xtn.jpg"},
                     {"name": "Sắc Hoa Tri Ân", "meta": "Truyền thông",
-                     "desc": "Các ấn phẩm truyền thông nội bộ cho chương trình chào mừng 20/11 của khoa."},
+                     "desc": "Các ấn phẩm truyền thông nội bộ cho chương trình chào mừng 20/11 của khoa.",
+                     "img": "assets/images/programs/tt-dep-2011.jpg"},
                 ],
                 "must": ["Biết ít nhất một công cụ thiết kế", "Giữ file gốc gọn gàng", "Nhận feedback tốt", "Đúng deadline"],
                 "plus": ["Photoshop / Illustrator", "Premiere / CapCut", "Có máy ảnh", "Biết motion graphics", "Có portfolio"],
                 "voices": [
                     {"q": "Cái khó không phải làm đẹp, mà làm đẹp trong đúng bộ màu và đúng "
                           "kích thước mà mỗi kênh yêu cầu.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng DEP"},
+                     "who": "Tình yêu với Canva", "role": "Thành viên mảng DEP"},
                 ],
                 "people": [("Hoàng Kim Tùng", "Trưởng ban"), ("Lê Viết Bảo", "Phó ban"), ("Nguyễn Thị Ánh Hằng", "Phó ban")],
             },
@@ -351,11 +370,14 @@ BANS = [
         ],
         "programs": [
             {"name": "Hội thi rèn nghề", "meta": "Học tập",
-             "desc": "Sân chơi học thuật giúp sinh viên rèn kỹ năng nghề nghiệp cốt lõi."},
+             "desc": "Sân chơi học thuật giúp sinh viên rèn kỹ năng nghề nghiệp cốt lõi.",
+             "img": "assets/images/programs/htnckh-ren-nghe.jpg"},
             {"name": "Chuỗi hoạt động định hướng nghề nghiệp", "meta": "Học tập",
-             "desc": "Chuỗi chia sẻ giúp sinh viên hình dung rõ hơn con đường sự nghiệp sau này."},
+             "desc": "Chuỗi chia sẻ giúp sinh viên hình dung rõ hơn con đường sự nghiệp sau này.",
+             "img": "assets/images/programs/htnckh-dinh-huong.jpg"},
             {"name": "BIT Genesis Research Award", "meta": "NCKH",
-             "desc": "Giải thưởng nghiên cứu khoa học của khoa, có lễ tổng kết và trao giải riêng."},
+             "desc": "Giải thưởng nghiên cứu khoa học của khoa, có lễ tổng kết và trao giải riêng.",
+             "img": "assets/images/programs/htnckh-genesis.jpg"},
         ],
         "must": ["Học lực ổn định", "Đọc hiểu tài liệu dài", "Cẩn thận với nguồn", "Sẵn sàng giải thích cho người khác"],
         "plus": ["Đã tham gia NCKH", "Biết dùng công cụ thống kê", "Đọc được tài liệu tiếng Anh", "Kỹ năng thuyết trình"],
@@ -363,10 +385,10 @@ BANS = [
         "voices": [
             {"q": "Mình từng nghĩ ban học tập là đi phát đề cương. Thực ra phần lớn thời gian "
                   "là ngồi đọc và kiểm xem tài liệu có sai chỗ nào không.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Học tập - NCKH"},
-            {"q": "Đề tài đầu tiên của tụi mình bị nhận xét là quá rộng. Sửa bốn lần mới ra "
+             "who": "Tập thể Ban", "role": "Ban Học tập - NCKH"},
+            {"q": "Những ý tưởng đầu tiên của tụi mình bị nhận xét là quá rộng. Sửa bốn lần mới ra "
                   "một câu hỏi đủ hẹp để trả lời được.",
-             "who": "Chờ cập nhật", "role": "Thành viên Ban Học tập - NCKH"},
+             "who": "Tập thể Ban", "role": "Ban Học tập - NCKH"},
         ],
         "people": [("Nguyễn Thị Thúy Vân", "Trưởng ban"), ("Nguyễn Hồng Phúc", "Phó ban"), ("Nguyễn Đinh Thảo Nhi", "Phó ban")],
         "mangs": [
@@ -382,18 +404,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Hội thi rèn nghề", "meta": "Học kỳ",
-                     "desc": "Cuộc thi rèn kỹ năng nghề nghiệp cho sinh viên khoa."},
+                     "desc": "Cuộc thi rèn kỹ năng nghề nghiệp cho sinh viên khoa.",
+                     "img": "assets/images/programs/htnckh-ht-ren-nghe.jpg"},
                     {"name": "Chuỗi hoạt động định hướng nghề nghiệp", "meta": "Trong học kỳ",
-                     "desc": "Chia sẻ từ người đi trước để sinh viên hình dung rõ hơn con đường sự nghiệp."},
+                     "desc": "Chia sẻ từ người đi trước để sinh viên hình dung rõ hơn con đường sự nghiệp.",
+                     "img": "assets/images/programs/htnckh-ht-dinh-huong.jpg"},
                     {"name": "UEH Debate & Chuỗi bình luận kinh tế", "meta": "Học thuật",
-                     "desc": "Cuộc thi tranh biện sinh viên kinh tế và chuỗi bình luận các vấn đề kinh tế thời sự."},
+                     "desc": "Cuộc thi tranh biện sinh viên kinh tế và chuỗi bình luận các vấn đề kinh tế thời sự.",
+                     "img": "assets/images/programs/htnckh-ht-debate.jpg"},
                 ],
                 "must": ["Nắm chương trình học", "Giải thích dễ hiểu", "Ngăn nắp", "Tôn trọng bản quyền tài liệu"],
                 "plus": ["Điểm số tốt ở môn cốt lõi", "Từng làm trợ giảng", "Biết dựng slide", "Tổ chức lớp học nhóm"],
                 "voices": [
                     {"q": "Giải được bài là một chuyện. Giải sao cho bạn ngồi cạnh hiểu "
                           "lại là một kỹ năng hoàn toàn khác.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng Học tập"},
+                     "who": "Tập thể mảng", "role": "mảng Học tập"},
                 ],
                 "people": [("Nguyễn Thị Thúy Vân", "Trưởng ban"), ("Nguyễn Hồng Phúc", "Phó ban"), ("Nguyễn Đinh Thảo Nhi", "Phó ban")],
             },
@@ -408,18 +433,21 @@ BANS = [
                 ],
                 "programs": [
                     {"name": "Giải thưởng Nghiên cứu khoa học", "meta": "Học kỳ",
-                     "desc": "Giải thưởng NCKH thường niên dành cho sinh viên khoa."},
+                     "desc": "Giải thưởng NCKH thường niên dành cho sinh viên khoa.",
+                     "img": "assets/images/programs/htnckh-nc-giai-thuong.jpg"},
                     {"name": "Lớp phương pháp Nghiên cứu", "meta": "Nhập môn",
-                     "desc": "Trang bị phương pháp luận cơ bản trước khi bắt tay vào một đề tài."},
+                     "desc": "Trang bị phương pháp luận cơ bản trước khi bắt tay vào một đề tài.",
+                     "img": "assets/images/programs/htnckh-nc-lop-phuong-phap.jpg"},
                     {"name": "BIT Genesis Research Award", "meta": "Lễ tổng kết",
-                     "desc": "Lễ tổng kết và trao giải nghiên cứu khoa học của khoa."},
+                     "desc": "Lễ tổng kết và trao giải nghiên cứu khoa học của khoa.",
+                     "img": "assets/images/programs/htnckh-nc-genesis.jpg"},
                 ],
                 "must": ["Kiên nhẫn với dữ liệu", "Trung thực học thuật", "Đọc hiểu tài liệu chuyên ngành", "Làm việc có phương pháp"],
                 "plus": ["SPSS / R / Python", "Đọc paper tiếng Anh", "Biết trích dẫn chuẩn", "Từng dự thi NCKH"],
                 "voices": [
                     {"q": "Nghiên cứu không hào nhoáng. Nhưng lần đầu số liệu của mình "
                           "nói ra một điều mình chưa từng nghĩ tới thì rất đáng.",
-                     "who": "Chờ cập nhật", "role": "Thành viên mảng NCKH"},
+                     "who": "Tập thể mảng", "role": "mảng NCKH"},
                 ],
                 "people": [("Nguyễn Thị Thúy Vân", "Trưởng ban"), ("Nguyễn Hồng Phúc", "Phó ban"), ("Nguyễn Đinh Thảo Nhi", "Phó ban")],
             },
@@ -619,18 +647,29 @@ def program_initials(name):
 
 
 def programs_grid(items):
-    """Lưới chương trình nổi bật: khung ảnh khổ dọc + tên luôn hiện, hover/focus
-    mới lộ mô tả. Chưa có ảnh thật nên khung hiện chữ cái đầu làm chỗ giữ chỗ —
-    không bịa ảnh, chỉ đánh dấu rõ đây là nơi ảnh sẽ nằm."""
-    cards = "".join(f"""<article class="program-card reveal" tabindex="0" aria-label="{e(p['name'])}. {e(p['desc'])}">
+    """Lưới chương trình nổi bật: Load ảnh thật nếu được khai báo trong key 'img', 
+    nếu không tự động lùi về khung giữ chỗ (fallback) chữ cái đầu."""
+    cards = []
+    for p in items:
+        if p.get('img'):
+            # Nếu có ảnh: render thẻ img. (style nội tuyến đảm bảo ảnh cover đẹp khung)
+            media_html = f'<img src="{e(p["img"])}" alt="{e(p["name"])}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">'
+        else:
+            # Nếu chưa có ảnh: render placeholder
+            media_html = f"""
+                <span class="program-ph">{e(program_initials(p['name']))}</span>
+                <span class="program-ph-note">Ảnh minh hoạ · chờ cập nhật</span>
+            """
+
+        cards.append(f"""<article class="program-card reveal" tabindex="0" aria-label="{e(p['name'])}. {e(p['desc'])}">
           <div class="program-media" aria-hidden="true">
-            <span class="program-ph">{e(program_initials(p['name']))}</span>
-            <span class="program-ph-note">Ảnh minh hoạ · chờ cập nhật</span>
+            {media_html}
           </div>
           <div class="program-caption"><p class="meta">{e(p['meta'])}</p><h4>{e(p['name'])}</h4></div>
           <div class="program-desc"><p>{e(p['desc'])}</p></div>
-        </article>""" for p in items)
-    return f'<div class="card-grid grid-3 reveal">{cards}</div>'
+        </article>""")
+        
+    return f'<div class="card-grid grid-3 reveal">{"".join(cards)}</div>'
 
 
 def skills_block(must, plus):
@@ -700,8 +739,7 @@ def mang_siblings(ban, current):
 
 
 def build_mang(ban, m):
-    """Trang riêng của một mảng chuyên môn. Mỗi mảng có URL và nội dung độc lập,
-    không còn là anchor bên trong trang ban (xem docs/progress.md)."""
+    """Trang riêng của một mảng chuyên môn."""
     body = f"""    <section class="page-hero">
       <div class="container">
         <p class="crumbs"><a href="index.html">Trang chủ</a> › <a href="{ban['slug']}.html">{e(ban['short'])}</a> › Mảng {e(m['name'])}</p>
