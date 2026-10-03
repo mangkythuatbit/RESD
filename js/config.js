@@ -27,8 +27,8 @@ window.RESD_CONFIG = {
 
   /* Hạn nhận đơn theo booklet R.E.S.D 2026. */
   event: {
-    title: "Hạn chót nhận đơn ứng tuyển",
-    date: "2026-10-03T23:59:00+07:00",
+    title: "Tự tin chia sẻ cùng BIT tại vòng phỏng vấn",
+    date: "2026-10-11T23:59:00+07:00",
     note: "",
   },
 };
