@@ -1,63 +1,33 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const canvas = document.getElementById("starCanvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: true }); // Hỗ trợ nền trong suốt
-
-    // Tạo Tooltip hiển thị thông tin
+    // ==========================================
+    // 1. TẠO TOOLTIP ĐỘNG KHÔNG BỊ CHE KHUẤT
+    // ==========================================
     const tooltip = document.createElement("div");
-    tooltip.id = "star-tooltip";
+    tooltip.className = "star-tooltip"; // Sẽ dùng CSS đã cấp ở bước trước
+    tooltip.innerHTML = `
+        <h4 id="tt-name">Tên Nhân Sự</h4>
+        <p><span>Ngày sinh:</span> <strong id="tt-dob"></strong></p>
+        <div class="zodiac-tag" id="tt-zodiac"></div>
+    `;
+    // Thêm thẳng vào body để tránh lỗi overflow: hidden của container
     document.body.appendChild(tooltip);
 
-    // CSS cho Tooltip
-    const style = document.createElement("style");
-    style.innerHTML = `
-        #star-tooltip {
-            position: absolute;
-            background: rgba(7, 19, 35, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0;
-            transform: translate(-50%, -100%);
-            transition: opacity 0.2s ease;
-            z-index: 9999;
-            font-family: 'Be Vietnam Pro', sans-serif;
-            min-width: 200px;
-        }
-        #star-tooltip h4 { margin: 0 0 5px 0; font-size: 16px; color: #b9f6ff; }
-        #star-tooltip p { margin: 0; font-size: 13px; color: #ddd; }
-        #star-tooltip .zodiac { margin-top: 8px; font-weight: bold; font-size: 12px; display: inline-block; padding: 3px 8px; background: rgba(255,255,255,0.1); border-radius: 4px;}
-    `;
-    document.head.appendChild(style);
+    const ttName = tooltip.querySelector('#tt-name');
+    const ttDob = tooltip.querySelector('#tt-dob');
+    const ttZodiac = tooltip.querySelector('#tt-zodiac');
 
-    // Biến toàn cục
-    let particles = [];
+    // Các thành phần DOM
+    const starsContainer = document.getElementById('stars-container');
+    const paths = document.querySelectorAll('.logo-path');
+    const btnToggle = document.getElementById('toggleShapeBtn');
+    const loadingOverlay = document.getElementById('starmapLoading');
+    
     let isGalaxyMode = false;
-    let canvasRect = canvas.getBoundingClientRect();
-    let mouse = { x: -1000, y: -1000, hoverParticle: null };
+    let allStarElements = [];
 
-    // Cấu hình
-    const CONFIG = {
-        starColor: "rgba(255, 255, 255, 0.9)",
-        lineColor: "rgba(255, 255, 255, 0.15)",
-        hoverColor: "#b9f6ff",
-        connectionDistance: 35, // Khoảng cách nối các vì sao với nhau
-        maxConnections: 3 // Số kết nối tối đa mỗi sao để tạo nét chòm sao không bị rối
-    };
-
-    // Hàm thay đổi kích thước Canvas
-    function resizeCanvas() {
-        canvasRect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = canvasRect.width;
-        canvas.height = canvasRect.height;
-    }
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    // Hàm tính Cung hoàng đạo
+    // ==========================================
+    // 2. HÀM TÍNH CUNG HOÀNG ĐẠO (Giữ nguyên logic của bạn)
+    // ==========================================
     function getZodiacSign(day, month) {
         if ((month == 1 && day <= 19) || (month == 12 && day >= 22)) return "Ma Kết (Capricorn)";
         if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Bảo Bình (Aquarius)";
@@ -74,7 +44,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return "Tinh tú ẩn danh";
     }
 
-    // 1. Đọc và phân tích file CSV
+    // ==========================================
+    // 3. ĐỌC VÀ XỬ LÝ DỮ LIỆU CSV (Bổ sung tính năng Sort)
+    // ==========================================
     async function loadUserData() {
         try {
             const response = await fetch('assets/data/Danh_sach_sinh_nhat.csv');
@@ -82,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const rows = data.split('\n');
             const users = [];
 
-            for (let i = 1; i < rows.length; i++) { // Bỏ qua dòng header (nếu có)
+            for (let i = 1; i < rows.length; i++) {
                 const cols = rows[i].split(',');
                 if (cols.length >= 2 && cols[0].trim() !== '') {
                     const name = cols[0].trim();
@@ -91,231 +63,131 @@ document.addEventListener("DOMContentLoaded", async () => {
                     users.push({
                         name: name,
                         dob: dob,
+                        day: parseInt(day),
+                        month: parseInt(month),
                         zodiac: getZodiacSign(parseInt(day), parseInt(month))
                     });
                 }
             }
+            // QUAN TRỌNG: Sắp xếp danh sách theo Ngày/Tháng sinh chuẩn Chòm sao
+            users.sort((a, b) => a.month !== b.month ? a.month - b.month : a.day - b.day);
             return users;
+            
         } catch (e) {
-            console.warn("Không tìm thấy file Danh_sach_sinh_nhat.csv. Sử dụng dữ liệu mẫu.");
-            // Dữ liệu mẫu nếu không có file CSV để test
-            return Array.from({length: 1000}).map((_, i) => ({
-                name: `Thành viên BIT ${i+1}`,
-                dob: `${(i%28)+1}/${(i%12)+1}/2004`,
-                zodiac: getZodiacSign((i%28)+1, (i%12)+1)
-            }));
-        }
-    }
-
-    // 2. Đọc ảnh Logo và lấy Toạ độ Pixel
-    function getLogoCoordinates(imageSrc, numPoints, canvasW, canvasH) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = imageSrc;
-            img.onload = () => {
-                const offCanvas = document.createElement("canvas");
-                const offCtx = offCanvas.getContext("2d");
-                
-                // Tính toán tỷ lệ để logo nằm vừa và giữa màn hình
-                const scale = Math.min((canvasW * 0.7) / img.width, (canvasH * 0.7) / img.height);
-                const drawW = img.width * scale;
-                const drawH = img.height * scale;
-                
-                offCanvas.width = drawW;
-                offCanvas.height = drawH;
-                offCtx.drawImage(img, 0, 0, drawW, drawH);
-
-                const imgData = offCtx.getImageData(0, 0, drawW, drawH).data;
-                let validCoords = [];
-
-                // Quét pixel (bỏ qua những pixel trong suốt)
-                for (let y = 0; y < drawH; y += 2) {
-                    for (let x = 0; x < drawW; x += 2) {
-                        const alpha = imgData[(y * drawW + x) * 4 + 3];
-                        if (alpha > 128) {
-                            validCoords.push({ 
-                                x: x + (canvasW - drawW) / 2, // Căn giữa X
-                                y: y + (canvasH - drawH) / 2  // Căn giữa Y
-                            });
-                        }
-                    }
+            console.warn("Không tìm thấy file CSV. Khởi tạo dữ liệu mẫu...");
+            let fallbackUsers = Array.from({length: 150}).map((_, i) => {
+                const d = (i % 28) + 1;
+                const m = (i % 12) + 1;
+                return {
+                    name: `Thành viên BIT ${i+1}`,
+                    dob: `${d.toString().padStart(2,'0')}/${m.toString().padStart(2,'0')}/2004`,
+                    day: d, month: m,
+                    zodiac: getZodiacSign(d, m)
                 }
-
-                // Xáo trộn toạ độ
-                validCoords = validCoords.sort(() => Math.random() - 0.5);
-                
-                // Lấy ra số toạ độ tương ứng với số User (nếu user nhiều hơn pixel thì lặp lại pixel)
-                const finalCoords = [];
-                for (let i = 0; i < numPoints; i++) {
-                    finalCoords.push(validCoords[i % validCoords.length]);
-                }
-                resolve(finalCoords);
-            };
-        });
-    }
-
-    // Class Ngôi sao
-    class Particle {
-        constructor(user, targetX, targetY) {
-            this.user = user;
-            // Trạng thái Logo
-            this.targetX = targetX;
-            this.targetY = targetY;
-            // Trạng thái Galaxy (ngẫu nhiên)
-            this.galaxyX = Math.random() * canvas.width;
-            this.galaxyY = Math.random() * canvas.height;
-            // Vị trí hiện tại (Lúc khởi tạo render thẳng vào logo)
-            this.x = this.targetX + (Math.random() - 0.5) * 20; 
-            this.y = this.targetY + (Math.random() - 0.5) * 20;
-            // Thuộc tính vẽ
-            this.size = Math.random() * 1.5 + 0.5;
-            this.baseSize = this.size;
-            // Chuyển động lơ lửng (idle)
-            this.angle = Math.random() * Math.PI * 2;
-            this.speed = Math.random() * 0.02 + 0.01;
-            // Các điểm nối
-            this.connections = [];
-        }
-
-        update() {
-            // Xác định đích đến dựa trên chế độ (Logo hay Galaxy)
-            let destX = isGalaxyMode ? this.galaxyX : this.targetX;
-            let destY = isGalaxyMode ? this.galaxyY : this.targetY;
-
-            // Idle animation (lơ lửng nhẹ)
-            this.angle += this.speed;
-            destX += Math.cos(this.angle) * 5;
-            destY += Math.sin(this.angle) * 5;
-
-            // Easing (Di chuyển mượt mà tới đích)
-            this.x += (destX - this.x) * 0.05;
-            this.y += (destY - this.y) * 0.05;
-
-            // Xử lý Hover
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 15) {
-                this.size = this.baseSize * 3;
-                mouse.hoverParticle = this;
-            } else {
-                this.size = this.baseSize;
-            }
-        }
-
-        draw(ctx) {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = mouse.hoverParticle === this ? CONFIG.hoverColor : CONFIG.starColor;
-            ctx.fill();
+            });
+            fallbackUsers.sort((a, b) => a.month !== b.month ? a.month - b.month : a.day - b.day);
+            return fallbackUsers;
         }
     }
 
-    // 3. Khởi tạo toàn bộ dữ liệu
+    // ==========================================
+    // 4. HÀM KHỞI TẠO BẢN ĐỒ SAO
+    // ==========================================
     async function init() {
         const users = await loadUserData();
-        const coords = await getLogoCoordinates('assets/images/logo-khoa-trang.png', users.length, canvas.width, canvas.height);
-
-        particles = [];
-        for (let i = 0; i < users.length; i++) {
-            particles.push(new Particle(users[i], coords[i].x, coords[i].y));
-        }
-
-        // Tối ưu hoá O(n): Tính toán kết nối chòm sao 1 lần duy nhất lúc khởi tạo dựa trên targetX/Y
-        for (let i = 0; i < particles.length; i++) {
-            let count = 0;
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].targetX - particles[j].targetX;
-                const dy = particles[i].targetY - particles[j].targetY;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < CONFIG.connectionDistance) {
-                    particles[i].connections.push(particles[j]);
-                    count++;
-                    if (count >= CONFIG.maxConnections) break; // Giới hạn nối để không tạo thành mảng đặc
-                }
-            }
-        }
-
-        // Ẩn loading và bật nút điều khiển
-        document.getElementById('starmapLoading').style.display = 'none';
-        const btn = document.getElementById('toggleShapeBtn');
-        btn.innerHTML = "Khám phá dải ngân hà BIT";
-        btn.disabled = false;
         
-        btn.addEventListener('click', () => {
-            isGalaxyMode = !isGalaxyMode;
-            btn.innerHTML = isGalaxyMode ? "Tụ hợp thành Logo BIT" : "Khám phá dải ngân hà BIT";
+        // Tính tổng chiều dài của tất cả các nét vẽ Logo (B, I, T, Mũi tên)
+        let totalLength = 0;
+        let pathLengths = [];
+        paths.forEach(path => {
+            const len = path.getTotalLength();
+            totalLength += len;
+            pathLengths.push(len);
         });
 
-        animate();
-    }
+        // Tính khoảng cách đều đặn giữa các nhân sự trên đường Path
+        const distancePerStar = totalLength / users.length;
+        let currentPathIndex = 0;
+        let currentLengthOnPath = 0;
 
-    // 4. Vòng lặp Animation
-    function animate() {
-        // Clear background hoàn toàn để giữ thuộc tính transparent
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        mouse.hoverParticle = null;
-
-        // Cập nhật tọa độ
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-        }
-
-        // Vẽ các đường nối chòm sao
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = CONFIG.lineColor;
-        ctx.beginPath();
-        for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            for (let j = 0; j < p.connections.length; j++) {
-                const conn = p.connections[j];
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(conn.x, conn.y);
+        users.forEach((user) => {
+            // Xác định ngôi sao này nằm ở Path nào (chữ B, I hay T,...)
+            let path = paths[currentPathIndex];
+            while (currentLengthOnPath > pathLengths[currentPathIndex] && currentPathIndex < paths.length - 1) {
+                currentLengthOnPath -= pathLengths[currentPathIndex];
+                currentPathIndex++;
+                path = paths[currentPathIndex];
             }
-        }
-        ctx.stroke();
 
-        // Vẽ các ngôi sao
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].draw(ctx);
-        }
+            // Lấy Toạ độ Vector 100% chính xác
+            const point = path.getPointAtLength(currentLengthOnPath);
+            const logoX = point.x;
+            const logoY = point.y;
+            
+            // Lấy Toạ độ Ngân hà (vị trí ngẫu nhiên lúc rã đông)
+            const galaxyX = Math.random() * 1000;
+            const galaxyY = Math.random() * 500;
 
-        // Cập nhật Tooltip
-        if (mouse.hoverParticle) {
-            const p = mouse.hoverParticle.user;
-            tooltip.innerHTML = `
-                <h4>${p.name}</h4>
-                <p>Ngày sinh: ${p.dob}</p>
-                <div class="zodiac">${p.zodiac}</div>
-            `;
-            // Định vị tooltip ngay trên con trỏ chuột
-            tooltip.style.left = (mouse.pageX) + 'px';
-            tooltip.style.top = (mouse.pageY - 15) + 'px';
-            tooltip.style.opacity = '1';
-            canvas.style.cursor = 'crosshair';
-        } else {
-            tooltip.style.opacity = '0';
-            canvas.style.cursor = 'default';
-        }
+            // Tạo cấu trúc SVG Ngôi sao
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('class', 'star-group');
+            group.style.transform = `translate(${logoX}px, ${logoY}px)`; // Vị trí mặc định là Logo
+            
+            const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+            use.setAttribute('href', '#star-def');
+            use.setAttribute('transform', `scale(${0.5 + Math.random() * 0.8})`); // Kích thước to nhỏ tự nhiên
 
-        requestAnimationFrame(animate);
+            group.appendChild(use);
+            if (starsContainer) starsContainer.appendChild(group);
+
+            allStarElements.push({ group, logoX, logoY, galaxyX, galaxyY });
+            currentLengthOnPath += distancePerStar;
+
+            // --- TÍNH NĂNG HOVER HIỂN THỊ THÔNG TIN ---
+            group.addEventListener('mouseenter', () => {
+                ttName.textContent = user.name;
+                ttDob.textContent = user.dob;
+                ttZodiac.textContent = user.zodiac;
+                tooltip.style.opacity = '1';
+                group.style.zIndex = "10";
+            });
+
+            group.addEventListener('mousemove', (e) => {
+                // Tracking chuột mượt mà, đẩy tooltip lên trên 25px để không đè vào chuột
+                tooltip.style.left = e.clientX + 'px';
+                tooltip.style.top = (e.clientY - 25) + 'px';
+            });
+
+            group.addEventListener('mouseleave', () => {
+                tooltip.style.opacity = '0';
+                group.style.zIndex = "1";
+            });
+        });
+
+        // Ẩn màn hình Loading và kích hoạt nút
+        if(loadingOverlay) loadingOverlay.style.display = 'none';
+        if(btnToggle) {
+            btnToggle.disabled = false;
+            btnToggle.innerHTML = "Khám phá dải ngân hà BIT";
+            
+            // Xử lý sự kiện bấm Nút
+            btnToggle.addEventListener('click', () => {
+                isGalaxyMode = !isGalaxyMode;
+                btnToggle.innerHTML = isGalaxyMode ? "Tụ hợp thành Logo BIT" : "Khám phá dải ngân hà BIT";
+                
+                // Ẩn/Hiện đường kẻ đứt
+                paths.forEach(p => p.style.opacity = isGalaxyMode ? '0' : '1');
+
+                // Di chuyển toàn bộ các vì sao
+                allStarElements.forEach(star => {
+                    const targetX = isGalaxyMode ? star.galaxyX : star.logoX;
+                    const targetY = isGalaxyMode ? star.galaxyY : star.logoY;
+                    star.group.style.transform = `translate(${targetX}px, ${targetY}px)`;
+                });
+            });
+        }
     }
 
-    // Lắng nghe sự kiện chuột
-    canvas.addEventListener("mousemove", (e) => {
-        mouse.x = e.clientX - canvasRect.left;
-        mouse.y = e.clientY - canvasRect.top;
-        mouse.pageX = e.pageX;
-        mouse.pageY = e.pageY;
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-        mouse.x = -1000;
-        mouse.y = -1000;
-    });
-
-    // Bắt đầu chạy
-    init();
+    // Bắt đầu khởi chạy hệ thống sau 0.5s để đảm bảo layout HTML đã load xong kích thước
+    setTimeout(init, 500); 
 });

@@ -878,93 +878,56 @@ details.panel > summary:focus-visible { outline: 2px solid var(--resd-cyan); out
   body { background: #ffffff; color: #101820; }
   body::before { display: none; }
 }
-#map-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+/* Đường nét khung Logo SVG */
+.logo-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    transition: opacity 1s ease;
+}
 
-        /* Khung SVG Vector */
-        svg {
-            width: 100%;
-            height: 100%;
-            max-width: 1200px;
-        }
+/* Ngôi sao SVG */
+.star-group {
+    cursor: pointer;
+    /* Hiệu ứng bay mượt mà khi bấm nút đổi trạng thái */
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.star-group:hover .star-shape {
+    fill: #00f0ff; 
+    filter: drop-shadow(0 0 10px #00f0ff);
+    transform: scale(1.8);
+}
+.star-shape {
+    fill: #ffffff;
+    transition: all 0.2s;
+    transform-origin: center;
+}
 
-        /* Yêu cầu 2: Đường nét kết nối xuyên suốt chuẩn dáng LOGO */
-        .logo-path {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.15); /* Màu nét nối liền mạch */
-            stroke-width: 1.5;
-            stroke-dasharray: 4 4; /* Nét đứt nhẹ nhàng cho cảm giác bầu trời sao */
-        }
-
-        /* Khối Group chứa Ngôi Sao */
-        .star-group {
-            cursor: pointer;
-            transition: transform 0.2s ease-out;
-        }
-
-        /* Hiệu ứng Scale và Glow khi Hover vào ngôi sao */
-        .star-group:hover .star-shape {
-            fill: #00f0ff; 
-            filter: drop-shadow(0 0 10px #00f0ff);
-            transform: scale(1.8);
-        }
-
-        /* Thuộc tính của một Ngôi sao cơ bản */
-        .star-shape {
-            fill: #ffffff;
-            transition: all 0.2s;
-            transform-origin: center;
-        }
-
-        /* =========================================
-           PHẦN 2: STYLING CHO TOOLTIP/POPOVER
-           ========================================= */
-        #tooltip {
-            position: absolute;
-            background: rgba(10, 25, 50, 0.95);
-            border: 1px solid #00f0ff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
-            color: #fff;
-            padding: 12px 18px;
-            border-radius: 8px;
-            pointer-events: none; /* QUAN TRỌNG: Ngăn tooltip tự bắt sự kiện hover gây giật lag */
-            opacity: 0; /* Mặc định ẩn */
-            transform: translate(-50%, -100%);
-            transition: opacity 0.2s ease, top 0.05s ease, left 0.05s ease; /* Mượt mà khi tracking chuột */
-            z-index: 9999; /* Luôn nổi trên cùng */
-            font-size: 14px;
-            min-width: 200px;
-            backdrop-filter: blur(5px);
-        }
-
-        #tooltip h4 {
-            margin: 0 0 10px 0;
-            color: #00f0ff;
-            font-size: 17px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        #tooltip p {
-            margin: 6px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        #tooltip .zodiac-tag {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 4px 10px;
-            background: rgba(0, 240, 255, 0.15);
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #b9f6ff;
-            border: 1px solid rgba(0, 240, 255, 0.3);
-        }
+/* Tooltip Hover Sinh ra ngầm */
+.star-tooltip {
+    position: fixed; /* Fixed giúp tooltip không bị cắt bởi overflow:hidden của container */
+    background: rgba(10, 25, 50, 0.95);
+    border: 1px solid #00f0ff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0; 
+    transform: translate(-50%, -100%);
+    transition: opacity 0.2s ease;
+    z-index: 99999;
+    font-size: 14px;
+    min-width: 200px;
+    backdrop-filter: blur(5px);
+    font-family: inherit;
+}
+.star-tooltip h4 { margin: 0 0 10px 0; color: #00f0ff; text-transform: uppercase; font-size: 16px;}
+.star-tooltip p { margin: 6px 0; display: flex; justify-content: space-between; }
+.star-tooltip .zodiac-tag {
+    display: inline-block; margin-top: 10px; padding: 4px 10px;
+    background: rgba(0, 240, 255, 0.15); border-radius: 4px;
+    font-size: 12px; font-weight: bold; color: #b9f6ff;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+}

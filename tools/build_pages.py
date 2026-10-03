@@ -1063,13 +1063,30 @@ def build_home():
       </button>
     </div>
 
-    <!-- Khu vực Canvas Bản Đồ Sao (Nền hoàn toàn trong suốt) -->
-    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border-radius: var(--radius); overflow: hidden;">
-      <canvas id="starCanvas" style="display: block; width: 100%; height: 100%;"></canvas>
+    <!-- Khu vực Bản Đồ Sao SVG -->
+    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border-radius: 12px; overflow: hidden; background: #050b14;">
       
-      <!-- Loading overlay trong suốt -->
+      <!-- BẮT ĐẦU PHẦN THAY THẾ: SVG thay cho Canvas -->
+      <svg id="starmap-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; display: block;">
+        <defs>
+            <g id="star-def">
+                <path d="M 0 -7 Q 1 -1 7 0 Q 1 1 0 7 Q -1 1 -7 0 Q -1 -1 0 -7 Z" class="star-shape" />
+            </g>
+        </defs>
+        <g id="logo-paths">
+            <path class="logo-path" d="M 120 80 L 280 80 C 370 80 370 190 280 190 C 390 190 390 360 280 360 L 120 360 Z M 200 140 L 260 140 C 290 140 290 160 260 160 L 200 160 Z M 200 250 L 280 250 C 320 250 320 300 280 300 L 200 300 Z"></path>
+            <path class="logo-path" d="M 430 80 L 530 80 L 530 360 L 430 360 Z"></path>
+            <path class="logo-path" d="M 580 80 L 840 80 L 840 150 L 750 150 L 750 360 L 650 360 L 650 150 L 580 150 Z"></path>
+            <path class="logo-path" d="M 60 200 Q 450 480 880 100 L 860 100 L 895 65 L 910 115 L 890 105 Z"></path>
+        </g>
+        <!-- Nơi JS sẽ inject các ngôi sao vào -->
+        <g id="stars-container"></g>
+      </svg>
+      <!-- KẾT THÚC PHẦN SVG -->
+
+      <!-- Loading overlay giữ nguyên -->
       <div id="starmapLoading" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(7, 19, 35, 0.7); backdrop-filter: blur(4px); color: #ffffff; z-index: 10;">
-        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; font-family: var(--font-code); letter-spacing: 0.1em;">ĐANG KẾT NỐI TINH HÀ...</span>
+        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em;">ĐANG KẾT NỐI TINH HÀ...</span>
       </div>
     </div>
   </div>
