@@ -6,43 +6,18 @@
   /* 7 đường viền kín của logo: thân B+I+T+swoosh, thân B dưới, 2 lỗ chữ B, I dưới, T dưới, mũi tên */
   var LOGO = ["M399 206.8 L398.5 331.5 L519.2 332 L519.8 207 L445 209Z", "M773.8 166.5 L759.5 172 L732.2 178.8 L651 193.8 L651.2 334.2 L773.8 334Z", "M82.8 126.5 L83.2 330.5 L267 330.5 L282 328.8 L305 322.8 L317.2 317.8 L328.5 311.5 L340.5 302.5 L349.5 293.2 L355.5 285 L361.8 270.5 L365.8 252.8 L366.5 243.5 L366.2 205 L284.8 194 L250.2 186 L194.5 171 L170.8 164 L145.5 155 L91.8 132 L86.2 128.8 L83.8 126.2Z", "M196 198.8 L197.8 197.8 L207.8 197.5 L227 199 L234.8 200.8 L242.8 204.8 L249 210.5 L253 218.8 L253 230 L250 237.2 L242.5 244.8 L230.8 250 L214.8 252.8 L196.2 252.5Z", "M988.8 25.8 L935 42.8 L935 43.8 L950 54.8 L949.5 56 L937 66.2 L936.2 70.2 L937.2 72.2 L940.5 74.5 L945 73.8 L957.5 62 L966 76.5 L967.5 77.2Z", "M0 82.2 L35.5 96.5 L131.8 126.8 L177.8 139.5 L217.8 148.8 L273 158.8 L337.8 167.8 L400 173.8 L462.8 176.8 L518 176.5 L567 173.8 L622 167.8 L696 155.8 L765.5 140.8 L820.2 126.5 L846.5 117.8 L875.2 106.8 L920.8 86.5 L919.8 86 L901.5 92 L839 109.8 L776.5 123.5 L775 123 L775 82 L775.8 81.2 L869.8 81 L870 1.2 L869 0.2 L555.2 0.5 L555.2 81.2 L648.5 81.2 L649.5 82.2 L649.2 144 L645.8 145 L606.8 149 L558 152.5 L521.5 153.2 L520.8 152.5 L519.8 1 L519 0.2 L398.8 0.8 L397.2 107.2 L397.5 151.5 L396.8 152 L339.8 147 L336.5 146 L342.5 138.5 L347.8 128.2 L350.8 118.5 L352.8 105.8 L353 90 L351.8 76.8 L349.5 65.8 L345.8 54.5 L340.8 44.8 L333.8 35 L325.2 26.2 L317.2 20 L307.2 14 L298.2 10 L286 6 L273.8 3.2 L246 0 L137 0 L83.5 1.2 L83.2 105.5 L82.5 106.2 L56.2 99 L10.5 84 L1.8 81.8Z", "M196.5 79.5 L204 79 L223.5 80.8 L229 82.8 L235.8 87.8 L239.8 94.5 L240.8 99.2 L240.8 106 L238 115 L233.2 121 L228.8 123.8 L219.8 125.8 L195.8 125.5 L195.8 80.2Z"];
 
-  var DAY = 864e5, Y0 = Date.UTC(2000, 2, 21); /* mốc 21/03 = đầu cung Bạch Dương */
-  function zkey(m, d) { var k = (Date.UTC(2000, m - 1, d) - Y0) / DAY; return k < 0 ? k + 366 : k; }
-  var SIGNS = [
-    ["♈", "Bạch Dương", 3, 21], ["♉", "Kim Ngưu", 4, 20], ["♊", "Song Tử", 5, 21], ["♋", "Cự Giải", 6, 21],
-    ["♌", "Sư Tử", 7, 23], ["♍", "Xử Nữ", 8, 23], ["♎", "Thiên Bình", 9, 23], ["♏", "Thiên Yết", 10, 23],
-    ["♐", "Nhân Mã", 11, 22], ["♑", "Ma Kết", 12, 22], ["♒", "Bảo Bình", 1, 20], ["♓", "Song Ngư", 2, 19]
-  ].map(function (s) { return { glyph: s[0], name: s[1], key: zkey(s[2], s[3]) }; });
-  function zodiacOf(k) { var s = SIGNS[0]; SIGNS.forEach(function (x) { if (k >= x.key) s = x; }); return s; }
+  var SIGNS = [["♈", "Bạch Dương"], ["♉", "Kim Ngưu"], ["♊", "Song Tử"], ["♋", "Cự Giải"], ["♌", "Sư Tử"], ["♍", "Xử Nữ"],
+    ["♎", "Thiên Bình"], ["♏", "Thiên Yết"], ["♐", "Nhân Mã"], ["♑", "Ma Kết"], ["♒", "Bảo Bình"], ["♓", "Song Ngư"]
+  ].map(function (x) { return { glyph: x[0], name: x[1] }; });
   function fold(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase(); }
-  function pad(n) { return String(n).padStart(2, "0"); }
 
-  function parse(text) {
-    var out = [], bad = 0;
-    text.replace(/^\uFEFF/, "").split(/\r?\n/).forEach(function (line, i) {
-      line = line.trim(); if (!line) return;
-      var c = line.lastIndexOf(",");
-      var m = c > 0 && line.slice(c + 1).replace(/"/g, "").trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-      if (!m) { if (i) bad++; return; } /* dòng đầu là tiêu đề */
-      var name = line.slice(0, c).replace(/^"|"$/g, "").trim(), d = +m[1], mo = +m[2];
-      if (!name || new Date(Date.UTC(2000, mo - 1, d)).getUTCMonth() !== mo - 1) { bad++; return; }
-      var k = zkey(mo, d);
-      out.push({ name: name, dob: pad(d) + "/" + pad(mo) + "/" + m[3], key: k, sign: zodiacOf(k), fold: fold(name) });
-    });
-    if (bad) console.warn("[starmap] bỏ qua " + bad + " dòng CSV không hợp lệ");
-    /* thứ tự chòm sao: từ 21/03 đi hết một vòng hoàng đạo */
-    out.sort(function (a, b) { return a.key - b.key || a.name.localeCompare(b.name, "vi"); });
-    return out;
-  }
-
-  async function load() {
-    var emb = document.getElementById("starmap-csv"); /* dữ liệu nhúng sẵn lúc build, không cần fetch */
-    if (emb && emb.textContent.trim()) { var u = parse(emb.textContent); if (u.length) return u; }
-    var r = await fetch("assets/data/Danh_sach_sinh_nhat.csv", { cache: "no-cache" });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    var users = parse(await r.text());
-    if (!users.length) throw new Error("CSV trống hoặc sai định dạng");
-    return users;
+  /* Dữ liệu nhúng lúc build chỉ gồm [tên, số thứ tự cung], đã xếp theo vòng hoàng đạo. Ngày sinh không có trong trang. */
+  function load() {
+    var el = document.getElementById("starmap-data"), arr;
+    try { arr = JSON.parse(el ? el.textContent : "[]"); } catch (e) { arr = []; }
+    var users = arr.map(function (r) { return { name: r[0], sign: SIGNS[r[1]], fold: fold(r[0]) }; });
+    if (!users.length) return Promise.reject(new Error("Chưa có dữ liệu bản đồ sao, hãy chạy lại build_pages.py"));
+    return Promise.resolve(users);
   }
 
   function mk(tag, attrs, parent) {
@@ -56,7 +31,7 @@
 
   function build(users) {
     var svg = $("starmap-svg"), btn = $("toggleShapeBtn"), input = $("starSearch"),
-        list = $("starResults"), info = $("starInfo");
+        list = $("starResults");
     var galaxy = false, picked = null, stars = [];
 
     svg.innerHTML =
@@ -103,7 +78,7 @@
 
     function addStar(u, i, x, y) {
       var g = mk("g", { class: "star-group", tabindex: 0, role: "button",
-        "aria-label": u.name + ", sinh " + u.dob + ", cung " + u.sign.name }, gStars);
+        "aria-label": u.name + ", cung " + u.sign.name }, gStars);
       var st = { u: u, g: g, x: x, y: y, lx: x, ly: y,
         gx: VB.x + 16 + rnd(i, 7919, 13) * (VB.w - 32), gy: VB.y + 16 + rnd(i, 104729, 101) * (VB.h - 32) };
       u.st = st; stars.push(st);
@@ -116,23 +91,13 @@
         if (e.pointerType !== "mouse") return;
         tip.innerHTML = "";
         var h = document.createElement("h4"); h.textContent = u.name;
-        var p = document.createElement("p"); p.textContent = "Ngày sinh: " + u.dob;
         var z = document.createElement("div"); z.className = "zodiac-tag"; z.textContent = u.sign.glyph + " " + u.sign.name;
-        tip.append(h, p, z); tip.style.opacity = "1";
+        tip.append(h, z); tip.style.opacity = "1";
       });
       g.addEventListener("pointermove", function (e) { tip.style.left = e.clientX + "px"; tip.style.top = (e.clientY - 22) + "px"; });
       g.addEventListener("pointerleave", function () { tip.style.opacity = "0"; });
       g.addEventListener("click", function () { pick(st); });
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(st); } });
-    }
-
-    function showInfo(u) {
-      info.innerHTML = "";
-      var h = document.createElement("strong"); h.textContent = u.name;
-      var p = document.createElement("span");
-      p.textContent = "Sinh ngày " + u.dob + " · Cung " + u.sign.glyph + " " + u.sign.name +
-        " · Ngôi sao thứ " + (users.indexOf(u) + 1) + "/" + users.length;
-      info.append(h, p); info.classList.add("has-pick");
     }
 
     function placeLabel(st) {
@@ -149,9 +114,9 @@
       var ring = mk("g", { class: "star-ring-wrap" }, st.g); mk("circle", { class: "star-ring", r: 12 }, ring);
       var lab = mk("g", { class: "star-label" }, st.g), rect = mk("rect", { rx: 6, height: 28 }, lab),
           t = mk("text", { x: 10, y: 19 }, lab);
-      t.textContent = st.u.name;
+      t.textContent = st.u.name + "  ·  " + st.u.sign.glyph + " " + st.u.sign.name;
       var w = Math.ceil(t.getComputedTextLength()) + 20; rect.setAttribute("width", w); lab.dataset.w = w;
-      placeLabel(st); showInfo(st.u);
+      placeLabel(st);
       if (scroll) svg.parentNode.scrollIntoView({ behavior: "smooth", block: "center" });
     }
     window.addEventListener("resize", function () { if (picked) placeLabel(picked); });
@@ -181,7 +146,7 @@
       if (!res.length) { var e = document.createElement("li"); e.className = "is-empty"; e.textContent = "Không tìm thấy. Thử gõ tên riêng của bạn (ví dụ: An)."; list.appendChild(e); }
       res.forEach(function (u) {
         var li = document.createElement("li"), a = document.createElement("span"), s = document.createElement("small");
-        li.setAttribute("role", "option"); a.textContent = u.name; s.textContent = u.sign.glyph + " " + u.dob.slice(0, 5);
+        li.setAttribute("role", "option"); a.textContent = u.name; s.textContent = u.sign.glyph + " " + u.sign.name;
         li.append(a, s); li.addEventListener("mousedown", function (ev) { ev.preventDefault(); choose(u); }); list.appendChild(li);
       });
       mark(); list.hidden = false; input.setAttribute("aria-expanded", "true");

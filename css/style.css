@@ -898,10 +898,6 @@ details.panel > summary:focus-visible { outline: 2px solid var(--resd-cyan); out
 .starmap-loading { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; padding: 16px; text-align: center; font-weight: 700; letter-spacing: .08em; color: #fff; background: rgba(7,19,35,.75); }
 .starmap-loading[hidden] { display: none; }
 .starmap-loading.is-error { color: #ffb4b4; letter-spacing: 0; }
-.starmap-info { max-width: 760px; margin: 16px auto 0; padding: 14px 18px; border-radius: 10px; text-align: left; color: #b9c9d6; background: rgba(10,25,50,.7); border: 1px solid rgba(0,240,255,.2); }
-.starmap-info.has-pick { display: flex; flex-direction: column; gap: 4px; color: #fff; border-color: #ffd76a; }
-.starmap-info strong { font-size: 1.15rem; color: #ffd76a; }
-
 /* Đường nối chòm sao: mảnh, mờ, phát sáng nhẹ */
 .logo-path { fill: none; stroke: rgba(150,215,255,.38); stroke-width: 1; stroke-linejoin: round; transition: opacity 1s; }
 .is-galaxy .logo-path { opacity: 0; }

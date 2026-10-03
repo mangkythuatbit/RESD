@@ -203,125 +203,13 @@
       </div>
       <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
+    <p class="starmap-hint">Các ngôi sao xếp dọc theo đường viền logo BIT, theo thứ tự ngày sinh trong vòng hoàng đạo (từ 21/3, cung Bạch Dương). Gõ tên để tìm sao của bạn, hoặc rê chuột / chạm vào một ngôi sao bất kỳ để xem tên và cung hoàng đạo.</p>
 
     <div class="starmap-container reveal">
       <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
       <div id="starmapLoading" class="starmap-loading" role="status"><span id="loadingText">Đang tải bản đồ sao...</span></div>
     </div>
-    <div id="starInfo" class="starmap-info" aria-live="polite">Chưa chọn ngôi sao nào. Gõ tên vào ô tìm kiếm phía trên, hoặc chạm vào một ngôi sao trên bản đồ.</div>
-    <script type="text/plain" id="starmap-csv">Tên,Ngày sinh
-Phạm Tấn Trung Nam,11/06/2006
-Nguyễn Ngọc Minh,15/11/2007
-Nguyễn Văn An,21/06/2007
-Lê Thị Hồng Hạnh,03/02/2007
-Phạm Hà Phương,10/01/2007
-Võ Thị Yến Nhi,09/09/2007
-Nguyễn Ngọc Thúy Hằng,19/08/2007
-Nguyễn Thanh Tiền,01/05/2007
-Bùi Kim Ngân,30/01/2007
-Nguyễn Trần Khánh Linh,02/01/2007
-Nguyễn Khánh Hà,04/09/2007
-Nguyễn Hà Trọng Dũng ,30/11/2007
-Nguyễn Thị Kim Loan ,27/02/2007
-Nguyễn Phúc Khánh Ngọc,13/04/2007
-Trần Thị Kim Ngân,12/01/2006
-Nguyễn Đức Trung,10/08/2006
-Hoàng Thị Mỹ Dung ,03/05/2006
-Nguyễn Ngọc Như Trâm,08/08/2007
-Vũ Hà Phi Yến,26/04/2006
-Bùi Lê Anh,26/04/2007
-Nguyễn Thị An Thuận,20/02/2007
-Nguyễn Khánh Huyền,01/01/2007
-Tạ Quang Tiến,09/10/2007
-Nguyễn Kim Ngân,03/02/2007
-Nguyễn Dương Gia Bảo,06/02/2007
-Hồ Ngọc Bảo Uyên,13/07/2007
-Nguyễn Gia Vỹ,21/08/2007
-Nguyễn Thị Thanh Uyên,25/09/2007
-Nguyễn Bùi Khánh Dương,02/04/2007
-Nguyễn Tiến Đạt,10/06/2007
-Dương Trung Hiếu,12/03/2006
-Lê Đăng Khánh,02/09/2006
-Nguyễn Linh Thùy Trang,19/03/2006
-Phạm Duy Anh,12/07/2006
-Võ Thanh Tân,19/06/2006
-Trần Minh Tuấn,01/03/2005
-Nguyễn Quốc Phi,23/06/2006
-Nguyễn Đoàn Cẩm Vy,03/07/2007
-Lưu Thị Dạ Thảo,31/03/2007
-Võ Trần Trí Bảo,20/01/2007
-Võ Thị Thúy Hiền,16/08/2007
-Nguyễn Ngọc Như Trâm,08/08/2007
-Đồng Khánh Linh ,24/09/2007
-Hoà Trần Ngọc Linh,27/04/2007
-Nguyễn Thúy Ngân,05/12/2006
-Nguyễn Thị Bảo Trân,20/11/2006
-Lê Huỳnh Gia Hân,02/04/2005
-Nguyễn Hữu Thông,15/07/2006
-Phạm Thiên Long,17/11/2006
-Trần Thu Hà,19/04/2006
-Tất Chí Thành,29/09/2006
-Trần Ánh Ngọc,20/02/2007
-Nguyễn Thị Trường Vy,02/06/2007
-Nguyễn Bạch Vy,10/11/2007
-Nguyễn Minh Thư,03/05/2007
-Nguyễn Ái Minh,30/04/2006
-Trần Khánh Huyền,09/12/2006
-Nguyễn Huỳnh Ngọc Hân,26/03/2007
-Nguyễn Thị Ánh Dương,10/01/2007
-Trần Bùi Vị Xuyên,05/09/2007
-Đặng Thị Như Anh,10/04/2007
-Nguyễn Kim Tố Quyên,14/04/2006
-Đặng Minh Huệ,05/01/2007
-Đinh Viết Quân,27/02/2006
-Nguyễn Thị Diệu Thảo,24/10/2006
-Ngô Văn Quỳnh,08/01/2007
-Nguyễn Lê Việt Anh,08/03/2007
-Nguyễn Thị Thu Hiền,18/09/2007
-Trần Ngọc Bảo Ngân,23/08/2007
-Nguyễn Đoàn Cẩm Vy,03/07/2007
-Lâm Tâm Như,05/01/2007
-Nguyễn Thị Thuý Nga,20/01/2007
-Nguyễn Lê Việt Anh,08/03/2007
-Nguyễn Thị Minh Oanh ,14/12/2006
-Bồ Ngọc Trâm ,08/09/2006
-Nguyễn Thái Huy ,02/09/2007
-Lê Viết Bảo,16/06/2005
-Trần Viết Gia Huy,01/07/2005
-Phạm Minh Thư,24/04/2006
-Quách Quỳnh Thục Nghi,24/04/2006
-Trần Thị Mỹ Duyên,24/08/2006
-Huỳnh Ngọc Phương Vy,01/08/2006
-Lê Hoài An,26/02/2006
-Nguyễn Ngọc Thảo Như,01/03/2007
-Trần Quang Trường,15/10/2006
-Phạm Hà Phương,10/01/2007
-Đỗ Trọng Khanh,14/01/2006
-Nguyễn Võ Lan Thanh,18/02/2005
-Bùi Ngọc Bảo Trân,05/03/2007
-Dương Thúy Hiền,07/03/2006
-Lê Bảo Ngọc,15/03/2005
-Nguyễn Đặng Hòa Thuận,06/04/2006
-Trần Thị Thúy Hằng,18/04/2006
-Trần Thị Ngọc Lan,26/04/2006
-Vương Phạm Ánh Tuyết,08/05/2006
-Huỳnh Bảo Nhi,01/06/2005
-Nguyễn Thu Trang,24/06/2006
-Bùi Trọng Nguyên,28/06/2005
-Nguyễn Đinh Thảo Nhi,03/07/2006
-Lê Nguyễn Thuỳ Linh,12/07/2005
-Hồ Minh Khang,22/07/2006
-Hồ Thị Diễm Trang,28/07/2006
-Lại Ngô Quỳnh Thư,01/09/2006
-Nguyễn Thị Thúy Vân,29/09/2005
-Tạ Quang Tiến,09/10/2007
-Võ Trần Ngọc Ánh,02/11/2006
-Nguyễn Hồng Phúc,06/11/2006
-Hoàng Viết Quang,13/11/2005
-Nguyễn Thị Ánh Hằng,15/11/2006
-Phạm Thị Ngọc Diệu,26/11/2005
-Hà Quang Đại,20/12/2005
-Hoàng Kim Tùng,23/12/2005</script>
+    <script type="application/json" id="starmap-data">[["Nguyễn Huỳnh Ngọc Hân", 0], ["Lưu Thị Dạ Thảo", 0], ["Lê Huỳnh Gia Hân", 0], ["Nguyễn Bùi Khánh Dương", 0], ["Nguyễn Đặng Hòa Thuận", 0], ["Đặng Thị Như Anh", 0], ["Nguyễn Phúc Khánh Ngọc", 0], ["Nguyễn Kim Tố Quyên", 0], ["Trần Thị Thúy Hằng", 0], ["Trần Thu Hà", 0], ["Phạm Minh Thư", 1], ["Quách Quỳnh Thục Nghi", 1], ["Bùi Lê Anh", 1], ["Trần Thị Ngọc Lan", 1], ["Vũ Hà Phi Yến", 1], ["Hoà Trần Ngọc Linh", 1], ["Nguyễn Ái Minh", 1], ["Nguyễn Thanh Tiền", 1], ["Hoàng Thị Mỹ Dung", 1], ["Nguyễn Minh Thư", 1], ["Vương Phạm Ánh Tuyết", 1], ["Huỳnh Bảo Nhi", 2], ["Nguyễn Thị Trường Vy", 2], ["Nguyễn Tiến Đạt", 2], ["Phạm Tấn Trung Nam", 2], ["Lê Viết Bảo", 2], ["Võ Thanh Tân", 2], ["Nguyễn Văn An", 3], ["Nguyễn Quốc Phi", 3], ["Nguyễn Thu Trang", 3], ["Bùi Trọng Nguyên", 3], ["Trần Viết Gia Huy", 3], ["Nguyễn Đinh Thảo Nhi", 3], ["Nguyễn Đoàn Cẩm Vy", 3], ["Nguyễn Đoàn Cẩm Vy", 3], ["Lê Nguyễn Thuỳ Linh", 3], ["Phạm Duy Anh", 3], ["Hồ Ngọc Bảo Uyên", 3], ["Nguyễn Hữu Thông", 3], ["Hồ Minh Khang", 3], ["Hồ Thị Diễm Trang", 4], ["Huỳnh Ngọc Phương Vy", 4], ["Nguyễn Ngọc Như Trâm", 4], ["Nguyễn Ngọc Như Trâm", 4], ["Nguyễn Đức Trung", 4], ["Võ Thị Thúy Hiền", 4], ["Nguyễn Ngọc Thúy Hằng", 4], ["Nguyễn Gia Vỹ", 4], ["Trần Ngọc Bảo Ngân", 5], ["Trần Thị Mỹ Duyên", 5], ["Lại Ngô Quỳnh Thư", 5], ["Lê Đăng Khánh", 5], ["Nguyễn Thái Huy", 5], ["Nguyễn Khánh Hà", 5], ["Trần Bùi Vị Xuyên", 5], ["Bồ Ngọc Trâm", 5], ["Võ Thị Yến Nhi", 5], ["Nguyễn Thị Thu Hiền", 5], ["Đồng Khánh Linh", 6], ["Nguyễn Thị Thanh Uyên", 6], ["Nguyễn Thị Thúy Vân", 6], ["Tất Chí Thành", 6], ["Tạ Quang Tiến", 6], ["Tạ Quang Tiến", 6], ["Trần Quang Trường", 6], ["Nguyễn Thị Diệu Thảo", 7], ["Võ Trần Ngọc Ánh", 7], ["Nguyễn Hồng Phúc", 7], ["Nguyễn Bạch Vy", 7], ["Hoàng Viết Quang", 7], ["Nguyễn Ngọc Minh", 7], ["Nguyễn Thị Ánh Hằng", 7], ["Phạm Thiên Long", 7], ["Nguyễn Thị Bảo Trân", 7], ["Phạm Thị Ngọc Diệu", 8], ["Nguyễn Hà Trọng Dũng", 8], ["Nguyễn Thúy Ngân", 8], ["Trần Khánh Huyền", 8], ["Nguyễn Thị Minh Oanh", 8], ["Hà Quang Đại", 8], ["Hoàng Kim Tùng", 9], ["Nguyễn Khánh Huyền", 9], ["Nguyễn Trần Khánh Linh", 9], ["Lâm Tâm Như", 9], ["Đặng Minh Huệ", 9], ["Ngô Văn Quỳnh", 9], ["Nguyễn Thị Ánh Dương", 9], ["Phạm Hà Phương", 9], ["Phạm Hà Phương", 9], ["Trần Thị Kim Ngân", 9], ["Đỗ Trọng Khanh", 9], ["Nguyễn Thị Thuý Nga", 10], ["Võ Trần Trí Bảo", 10], ["Bùi Kim Ngân", 10], ["Lê Thị Hồng Hạnh", 10], ["Nguyễn Kim Ngân", 10], ["Nguyễn Dương Gia Bảo", 10], ["Nguyễn Võ Lan Thanh", 10], ["Nguyễn Thị An Thuận", 11], ["Trần Ánh Ngọc", 11], ["Lê Hoài An", 11], ["Nguyễn Thị Kim Loan", 11], ["Đinh Viết Quân", 11], ["Nguyễn Ngọc Thảo Như", 11], ["Trần Minh Tuấn", 11], ["Bùi Ngọc Bảo Trân", 11], ["Dương Thúy Hiền", 11], ["Nguyễn Lê Việt Anh", 11], ["Nguyễn Lê Việt Anh", 11], ["Dương Trung Hiếu", 11], ["Lê Bảo Ngọc", 11], ["Nguyễn Linh Thùy Trang", 11]]</script>
   </div>
 </section>
     <section class="section">

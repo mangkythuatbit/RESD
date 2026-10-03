@@ -922,14 +922,34 @@ def build_ban(ban):
 # =============================================================================
 
 def starmap_csv():
-    """Nhúng thẳng danh sách sinh nhật vào trang để bản đồ sao không phụ thuộc fetch()."""
-    path = os.path.join(ROOT, "assets", "data", "Danh_sach_sinh_nhat.csv")
-    try:
-        with open(path, encoding="utf-8-sig") as fh:
-            return fh.read().replace("</", "<\\/").strip()
-    except OSError:
-        print("  CẢNH BÁO: không thấy %s, bản đồ sao sẽ tự fetch CSV khi chạy." % path)
-        return ""
+    """Đọc CSV lúc build và nhúng vào trang CHỈ tên + số thứ tự cung hoàng đạo (đã xếp theo vòng hoàng đạo).
+    Ngày sinh không đi vào HTML. Nên đặt CSV ở tools/ (cạnh file này) thay vì assets/ để không bị public."""
+    import csv, datetime, json
+    here = os.path.dirname(os.path.abspath(__file__))
+    for path in (os.path.join(here, "Danh_sach_sinh_nhat.csv"),
+                 os.path.join(ROOT, "assets", "data", "Danh_sach_sinh_nhat.csv")):
+        if os.path.exists(path):
+            break
+    else:
+        print("  CẢNH BÁO: không thấy Danh_sach_sinh_nhat.csv, bản đồ sao sẽ trống.")
+        return "[]"
+    starts = [(3, 21), (4, 20), (5, 21), (6, 21), (7, 23), (8, 23), (9, 23), (10, 23), (11, 22), (12, 22), (1, 20), (2, 19)]
+    ref = datetime.date(2000, 3, 21)
+    rows = []
+    with open(path, encoding="utf-8-sig", newline="") as fh:
+        for r in list(csv.reader(fh))[1:]:
+            try:
+                name, d, m = r[0].strip(), *map(int, r[1].strip().split("/")[:2])
+                day = datetime.date(2000, m, d)
+            except (IndexError, ValueError):
+                continue
+            if not name:
+                continue
+            key = (day - ref).days % 366
+            sign = max(i for i, (sm, sd) in enumerate(starts) if (day - ref).days % 366 >= (datetime.date(2000, sm, sd) - ref).days % 366)
+            rows.append((key, name, sign))
+    rows.sort(key=lambda x: (x[0], x[1]))
+    return json.dumps([[n, s] for _, n, s in rows], ensure_ascii=False).replace("</", "<\\/")
 
 
 def build_home():
@@ -1075,14 +1095,13 @@ def build_home():
       </div>
       <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
-    <p class="starmap-hint">Các ngôi sao xếp dọc theo đường viền logo BIT, theo thứ tự ngày sinh trong vòng hoàng đạo (từ 21/3, cung Bạch Dương). Hãy gõ tên để tìm sao của bạn, hoặc rê chuột / chạm vào một ngôi sao bất kỳ.</p>
+    <p class="starmap-hint">Các ngôi sao xếp dọc theo đường viền logo BIT, theo thứ tự ngày sinh trong vòng hoàng đạo (từ 21/3, cung Bạch Dương). Gõ tên để tìm sao của bạn, hoặc rê chuột / chạm vào một ngôi sao bất kỳ để xem tên và cung hoàng đạo.</p>
 
     <div class="starmap-container reveal">
       <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
       <div id="starmapLoading" class="starmap-loading" role="status"><span id="loadingText">Đang tải bản đồ sao...</span></div>
     </div>
-    <div id="starInfo" class="starmap-info" aria-live="polite">Chưa chọn ngôi sao nào. Gõ tên vào ô tìm kiếm phía trên, hoặc chạm vào một ngôi sao trên bản đồ.</div>
-    <script type="text/plain" id="starmap-csv">{starmap_csv()}</script>
+    <script type="application/json" id="starmap-data">{starmap_csv()}</script>
   </div>
 </section>
     <section class="section">
