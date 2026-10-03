@@ -488,6 +488,7 @@ def head(title, desc, css_vars="", extra_js=()):
   <link rel="stylesheet" href="{BS_CSS}" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">{style}
   <script defer src="{BS_JS}" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 {scripts}
 </head>"""
 
@@ -1044,7 +1045,40 @@ def build_home():
         <div class="card-grid grid-4">{cards}</div>
       </div>
     </section>
+<section class="section" id="bit-star-map">
+  <div class="container text-center">
+    <div class="section-head mx-auto reveal">
+      <p class="kicker">Bản đồ sao cá nhân</p>
+      <h2 style="font-size: clamp(2rem, 5vw, 3rem); text-shadow: 0 0 15px var(--resd-cyan);">Những vì tinh tú BIT</h2>
+      <p style="color: var(--resd-cyan); font-style: italic; margin-top: 10px;">
+        "Cho dù bạn là ai, khi bạn chọn đồng hành cùng BIT, bạn sẽ luôn là một vì sao sáng nhất trong vũ trụ BIT."
+      </p>
+    </div>
 
+    <!-- Khu vực điều khiển -->
+    <div class="starmap-controls reveal mt-4 mb-4" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+      <button class="btn-gem" id="toggleShapeBtn" disabled>
+        <span>Đang đồng bộ dữ liệu...</span>
+      </button>
+    </div>
+
+    <!-- Khu vực Canvas Bản Đồ Sao -->
+    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border: 1px solid var(--resd-line); border-radius: var(--radius); background: linear-gradient(160deg, #020812, #071323); overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.8);">
+      <canvas id="starCanvas" style="display: block; width: 100%; height: 100%;"></canvas>
+      
+      <!-- Tooltip khi hover -->
+      <div id="starTooltip" class="star-tooltip">
+        <strong id="ttName">Tên</strong><br>
+        <span id="ttDob" style="color: var(--resd-muted); font-size: 0.85rem;">Ngày sinh</span><br>
+        <span id="ttSign" style="font-weight: bold; margin-top: 5px; display: inline-block;">Chòm sao</span>
+      </div>
+      
+      <!-- Loading overlay ngầu hơn -->
+      <div id="starmapLoading" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(2, 8, 18, 0.95); color: var(--resd-cyan); z-index: 10;">
+        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; font-family: var(--font-code); letter-spacing: 0.05em;">Đang kết nối trạm không gian...</span>
+      </div>
+    </div>
+  </div>
     <section class="section">
       <div class="container">
         <div class="panel reveal">
@@ -1061,7 +1095,7 @@ def build_home():
     return page(
         "R.E.S.D | Cổng thông tin chương trình — Đoàn - Hội BIT",
         "Cổng thông tin chương trình R.E.S.D: bốn ban chuyên môn, tám lựa chọn, bài kiểm tra định hướng và đơn đăng ký.",
-        "home", "home", body, extra_js=("main.js",),
+        "home", "home", body, extra_js=("main.js","starmap.js"),
     )
 
 
