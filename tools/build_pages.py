@@ -1152,7 +1152,7 @@ def build_home():
 <section class="section" id="bit-star-map">
   <div class="container text-center">
     <div class="section-head mx-auto reveal">
-      <p class="kicker">Bản đồ sao cá nhân</p>
+      <p class="kicker">Hành trình khởi đầu từ những vì sao xa lạ</p>
       <h2 style="font-size: clamp(2rem, 5vw, 3rem); text-shadow: 0 0 15px var(--resd-cyan);">Những vì tinh tú BIT</h2>
       <p style="color: var(--resd-cyan); font-style: italic; margin-top: 10px;">
         "Cho dù bạn là ai, khi bạn chọn đồng hành cùng BIT, bạn sẽ luôn là một vì sao sáng nhất trong vũ trụ BIT."
