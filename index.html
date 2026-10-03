@@ -184,6 +184,7 @@
         </a></div>
       </div>
     </section>
+<!-- BẮT ĐẦU: BẢN ĐỒ SAO CÁ NHÂN -->
 <section class="section" id="bit-star-map">
   <div class="container text-center">
     <div class="section-head mx-auto reveal">
@@ -201,23 +202,17 @@
       </button>
     </div>
 
-    <!-- Khu vực Canvas Bản Đồ Sao -->
-    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border: 1px solid var(--resd-line); border-radius: var(--radius); background: linear-gradient(160deg, #020812, #071323); overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.8);">
+    <!-- Khu vực Canvas Bản Đồ Sao (Nền hoàn toàn trong suốt) -->
+    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border-radius: var(--radius); overflow: hidden;">
       <canvas id="starCanvas" style="display: block; width: 100%; height: 100%;"></canvas>
       
-      <!-- Tooltip khi hover -->
-      <div id="starTooltip" class="star-tooltip">
-        <strong id="ttName">Tên</strong><br>
-        <span id="ttDob" style="color: var(--resd-muted); font-size: 0.85rem;">Ngày sinh</span><br>
-        <span id="ttSign" style="font-weight: bold; margin-top: 5px; display: inline-block;">Chòm sao</span>
-      </div>
-      
-      <!-- Loading overlay ngầu hơn -->
-      <div id="starmapLoading" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(2, 8, 18, 0.95); color: var(--resd-cyan); z-index: 10;">
-        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; font-family: var(--font-code); letter-spacing: 0.05em;">Đang kết nối trạm không gian...</span>
+      <!-- Loading overlay trong suốt -->
+      <div id="starmapLoading" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(7, 19, 35, 0.7); backdrop-filter: blur(4px); color: #ffffff; z-index: 10;">
+        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; font-family: var(--font-code); letter-spacing: 0.1em;">ĐANG KẾT NỐI TINH HÀ...</span>
       </div>
     </div>
   </div>
+</section>
     <section class="section">
       <div class="container">
         <div class="panel reveal">
