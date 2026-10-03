@@ -1073,13 +1073,8 @@ def build_home():
         <input id="starSearch" type="search" placeholder="Gõ tên của bạn, không cần dấu" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="starResults" disabled>
         <ul id="starResults" class="starmap-results" role="listbox" hidden></ul>
       </div>
-      <div class="starmap-filter">
-        <label for="starZodiac">Lọc theo cung hoàng đạo</label>
-        <select id="starZodiac" disabled><option value="">Tất cả các cung</option></select>
-      </div>
       <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
-    <p class="starmap-hint">Các ngôi sao xếp dọc theo đường viền logo BIT, theo thứ tự ngày sinh trong vòng hoàng đạo (từ 21/3, cung Bạch Dương). Hãy gõ tên để tìm sao của bạn, hoặc rê chuột / chạm vào một ngôi sao bất kỳ.</p>
 
     <div class="starmap-container reveal">
       <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
