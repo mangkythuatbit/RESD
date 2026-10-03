@@ -56,18 +56,27 @@
 
   function build(users) {
     var svg = $("starmap-svg"), btn = $("toggleShapeBtn"), input = $("starSearch"),
-        list = $("starResults"), sel = $("starZodiac"), info = $("starInfo");
+        list = $("starResults"), info = $("starInfo");
     var galaxy = false, picked = null, stars = [];
 
     svg.innerHTML =
-      '<defs><radialGradient id="sm-glow"><stop offset="0" stop-color="#9ff3ff" stop-opacity=".55"/><stop offset="1" stop-color="#9ff3ff" stop-opacity="0"/></radialGradient>' +
-      /* ngôi sao 4 cánh lõm như bản gốc: cánh dọc dài, cánh ngang ngắn, sao phụ xoay 45°, tâm sáng, quầng sáng */
-      '<g id="star-def"><circle r="12" fill="url(#sm-glow)"/>' +
-      '<path class="star-shape" d="M0 -13 Q1.3 -1.3 9 0 Q1.3 1.3 0 13 Q-1.3 1.3 -9 0 Q-1.3 -1.3 0 -13Z"/>' +
-      '<path class="star-diag" transform="rotate(45)" d="M0 -5.5 Q.6 -.6 5.5 0 Q.6 .6 0 5.5 Q-.6 .6 -5.5 0 Q-.6 -.6 0 -5.5Z"/>' +
-      '<circle r="1.6" fill="#fff"/></g></defs>';
-    var gFill = mk("g", {}, svg), gOut = mk("g", {}, svg), gStars = mk("g", {}, svg);
-    mk("path", { class: "sm-fill", d: LOGO.join(" ") }, gFill);
+      '<defs>' + [["w","#ffffff","#9fdcff"],["b","#bfe3ff","#4aa8ff"],["y","#fff1c9","#ffc766"]].map(function (c) {
+        return '<radialGradient id="sm-g-' + c[0] + '"><stop offset="0" stop-color="' + c[1] + '" stop-opacity="1"/><stop offset=".1" stop-color="' + c[1] + '" stop-opacity=".7"/><stop offset=".3" stop-color="' + c[2] + '" stop-opacity=".22"/><stop offset=".6" stop-color="' + c[2] + '" stop-opacity=".06"/><stop offset="1" stop-color="' + c[2] + '" stop-opacity="0"/></radialGradient>' +
+          '<g id="star-' + c[0] + '"><circle r="16" fill="url(#sm-g-' + c[0] + ')"/><circle class="star-shape" r="2.1" fill="' + c[1] + '"/></g>';
+      }).join("") + '<radialGradient id="sm-neb-a"><stop offset="0" stop-color="#4b7bff" stop-opacity=".22"/><stop offset="1" stop-color="#4b7bff" stop-opacity="0"/></radialGradient><radialGradient id="sm-neb-b"><stop offset="0" stop-color="#b05cff" stop-opacity=".18"/><stop offset="1" stop-color="#b05cff" stop-opacity="0"/></radialGradient><radialGradient id="sm-neb-c"><stop offset="0" stop-color="#2fd6ff" stop-opacity=".14"/><stop offset="1" stop-color="#2fd6ff" stop-opacity="0"/></radialGradient><linearGradient id="sm-tail"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient><filter id="sm-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2"/></filter></defs>';
+    var gNeb = mk("g", { class: "sm-nebula" }, svg);
+    [["a", 300, 130, 360, 170], ["b", 720, 210, 400, 190], ["c", 500, 90, 300, 120]].forEach(function (n) {
+      mk("ellipse", { cx: n[1], cy: n[2], rx: n[3], ry: n[4], fill: "url(#sm-neb-" + n[0] + ")" }, gNeb);
+    });
+    [[80, 20, 0], [620, 5, 7]].forEach(function (m) { /* sao băng */
+      mk("line", { class: "sm-meteor", x1: m[0] - 70, y1: m[1] - 28, x2: m[0], y2: m[1], stroke: "url(#sm-tail)", "stroke-width": 1.6, "stroke-linecap": "round", style: "animation-delay:" + m[2] + "s" }, svg);
+    });
+    var gBg = mk("g", { class: "sm-dust" }, svg), gOut = mk("g", { filter: "url(#sm-blur)", opacity: ".9" }, svg), gStars = mk("g", {}, svg);
+    for (var q = 0; q < 170; q++) { /* bụi sao nền: chỉ là những chấm sáng mờ */
+      mk("circle", { cx: (VB.x + rnd(q, 6151, 3) * VB.w).toFixed(1), cy: (VB.y + rnd(q, 7727, 11) * VB.h).toFixed(1),
+        r: (0.4 + rnd(q, 13, 1) * 1.1).toFixed(2), fill: q % 5 ? "#cfe8ff" : "#ffe9b8",
+        style: "--d:" + (rnd(q, 29, 3) * 4).toFixed(1) + "s;--o:" + (0.25 + rnd(q, 53, 9) * 0.5).toFixed(2) }, gBg);
+    }
 
     /* chia số ngôi sao theo chu vi từng nét logo (phương pháp phần dư lớn nhất) */
     var cs = LOGO.map(function (d) {
@@ -101,7 +110,7 @@
       g.style.transform = "translate(" + x + "px," + y + "px)";
       mk("circle", { class: "star-hit", r: 15 }, g);
       var b = mk("g", { class: "star-body" }, g);
-      mk("use", { href: "#star-def", transform: "scale(" + (0.75 + rnd(i, 31, 7) * 0.45).toFixed(2) + ")",
+      mk("use", { href: "#star-" + ["w", "w", "b", "w", "y", "b"][i % 6], transform: "scale(" + (0.55 + Math.pow(rnd(i, 31, 7), 2) * 1.1).toFixed(2) + ")",
         style: "--d:" + (rnd(i, 17, 5) * 3).toFixed(1) + "s" }, b);
       g.addEventListener("pointerenter", function (e) {
         if (e.pointerType !== "mouse") return;
@@ -157,19 +166,6 @@
         s.g.style.transform = "translate(" + s.x + "px," + s.y + "px)";
       });
       if (picked) placeLabel(picked);
-    });
-
-    /* lọc theo cung hoàng đạo */
-    sel.disabled = false;
-    SIGNS.forEach(function (s, i) {
-      var n = users.filter(function (u) { return u.sign === s; }).length;
-      var o = document.createElement("option"); o.value = i; o.textContent = s.glyph + " " + s.name + " (" + n + ")"; sel.appendChild(o);
-    });
-    sel.addEventListener("change", function () {
-      var s = sel.value === "" ? null : SIGNS[+sel.value];
-      svg.classList.toggle("has-filter", !!s);
-      stars.forEach(function (x) { x.g.classList.toggle("is-match", !!s && x.u.sign === s); });
-      if (s && !picked) { info.classList.remove("has-pick"); info.textContent = "Cung " + s.name + ": " + stars.filter(function (x) { return x.u.sign === s; }).length + " ngôi sao đang sáng lên trên bản đồ."; }
     });
 
     /* tìm tên: gợi ý ngay khi gõ, không cần gõ dấu */
