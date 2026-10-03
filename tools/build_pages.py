@@ -921,6 +921,17 @@ def build_ban(ban):
 # TRANG CHỦ
 # =============================================================================
 
+def starmap_csv():
+    """Nhúng thẳng danh sách sinh nhật vào trang để bản đồ sao không phụ thuộc fetch()."""
+    path = os.path.join(ROOT, "assets", "data", "Danh_sach_sinh_nhat.csv")
+    try:
+        with open(path, encoding="utf-8-sig") as fh:
+            return fh.read().replace("</", "<\\/").strip()
+    except OSError:
+        print("  CẢNH BÁO: không thấy %s, bản đồ sao sẽ tự fetch CSV khi chạy." % path)
+        return ""
+
+
 def build_home():
     cards = "".join(
         f'''<a class="planet-card reveal" href="{b['slug']}.html" style="--gem:{b['color']}">
@@ -1056,39 +1067,26 @@ def build_home():
       </p>
     </div>
 
-    <!-- Khu vực điều khiển -->
-    <div class="starmap-controls reveal mt-4 mb-4" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-      <button class="btn-gem" id="toggleShapeBtn" disabled>
-        <span>Đang đồng bộ dữ liệu...</span>
-      </button>
-    </div>
-
-    <!-- Khu vực Bản Đồ Sao SVG -->
-    <div class="starmap-container reveal" style="position: relative; width: 100%; height: 600px; border-radius: 12px; overflow: hidden; background: #050b14;">
-      
-      <!-- BẮT ĐẦU PHẦN THAY THẾ: SVG thay cho Canvas -->
-      <svg id="starmap-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; display: block;">
-        <defs>
-            <g id="star-def">
-                <path d="M 0 -7 Q 1 -1 7 0 Q 1 1 0 7 Q -1 1 -7 0 Q -1 -1 0 -7 Z" class="star-shape" />
-            </g>
-        </defs>
-        <g id="logo-paths">
-            <path class="logo-path" d="M 120 80 L 280 80 C 370 80 370 190 280 190 C 390 190 390 360 280 360 L 120 360 Z M 200 140 L 260 140 C 290 140 290 160 260 160 L 200 160 Z M 200 250 L 280 250 C 320 250 320 300 280 300 L 200 300 Z"></path>
-            <path class="logo-path" d="M 430 80 L 530 80 L 530 360 L 430 360 Z"></path>
-            <path class="logo-path" d="M 580 80 L 840 80 L 840 150 L 750 150 L 750 360 L 650 360 L 650 150 L 580 150 Z"></path>
-            <path class="logo-path" d="M 60 200 Q 450 480 880 100 L 860 100 L 895 65 L 910 115 L 890 105 Z"></path>
-        </g>
-        <!-- Nơi JS sẽ inject các ngôi sao vào -->
-        <g id="stars-container"></g>
-      </svg>
-      <!-- KẾT THÚC PHẦN SVG -->
-
-      <!-- Loading overlay giữ nguyên -->
-      <div id="starmapLoading" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(7, 19, 35, 0.7); backdrop-filter: blur(4px); color: #ffffff; z-index: 10;">
-        <span id="loadingText" style="font-size: 1.1rem; font-weight: bold; letter-spacing: 0.1em;">ĐANG KẾT NỐI TINH HÀ...</span>
+    <div class="starmap-tools reveal">
+      <div class="starmap-search">
+        <label for="starSearch">Tìm ngôi sao của bạn</label>
+        <input id="starSearch" type="search" placeholder="Gõ tên của bạn, không cần dấu" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="starResults" disabled>
+        <ul id="starResults" class="starmap-results" role="listbox" hidden></ul>
       </div>
+      <div class="starmap-filter">
+        <label for="starZodiac">Lọc theo cung hoàng đạo</label>
+        <select id="starZodiac" disabled><option value="">Tất cả các cung</option></select>
+      </div>
+      <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
+    <p class="starmap-hint">Các ngôi sao xếp dọc theo đường viền logo BIT, theo thứ tự ngày sinh trong vòng hoàng đạo (từ 21/3, cung Bạch Dương). Hãy gõ tên để tìm sao của bạn, hoặc rê chuột / chạm vào một ngôi sao bất kỳ.</p>
+
+    <div class="starmap-container reveal">
+      <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
+      <div id="starmapLoading" class="starmap-loading" role="status"><span id="loadingText">Đang tải bản đồ sao...</span></div>
+    </div>
+    <div id="starInfo" class="starmap-info" aria-live="polite">Chưa chọn ngôi sao nào. Gõ tên vào ô tìm kiếm phía trên, hoặc chạm vào một ngôi sao trên bản đồ.</div>
+    <script type="text/plain" id="starmap-csv">{starmap_csv()}</script>
   </div>
 </section>
     <section class="section">
