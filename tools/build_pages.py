@@ -958,18 +958,6 @@ def _read_csv_rows(path):
     return list(csv.reader(io.StringIO(text, newline=""), delimiter=delim))
 
 
-def _parse_dm(dob):
-    """Lấy (ngày, tháng) từ ô ngày sinh. Hỗ trợ: 2006-06-11 00:00:00 (Excel/ISO), 11/06/2006, 11-06-2006, '8 /9/2006'."""
-    t = re.sub(r"\s+", "", dob.split()[0] if re.match(r"^\d{4}-", dob) else dob)
-    m = re.match(r"^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})", t)       # năm-tháng-ngày
-    if m:
-        return int(m.group(3)), int(m.group(2))
-    m = re.match(r"^(\d{1,2})[-/.](\d{1,2})(?:[-/.]\d{2,4})?$", t)   # ngày/tháng[/năm]
-    if m:
-        return int(m.group(1)), int(m.group(2))
-    raise ValueError(dob)
-
-
 def starmap_csv():
     """Đọc CSV lúc build, nhúng vào trang CHỈ: tên, số thứ tự cung hoàng đạo, ban công tác (kèm màu ban).
     Ngày sinh không đi vào HTML. Nên đặt CSV ở tools/ (cạnh file này) để không bị public."""
@@ -1001,7 +989,7 @@ def starmap_csv():
         try:
             name = " ".join(r[0].split())
             dob = r[c_dob].strip()
-            d, m = _parse_dm(dob)
+            d, m = map(int, dob.split("/")[:2])
             day = datetime.date(2000, m, d)
         except (IndexError, ValueError):
             continue
@@ -1179,6 +1167,7 @@ def build_home():
       </div>
       <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
+
     <div class="starmap-container reveal">
       <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
       <div id="starmapLoading" class="starmap-loading" role="status"><span id="loadingText">Đang tải bản đồ sao...</span></div>
