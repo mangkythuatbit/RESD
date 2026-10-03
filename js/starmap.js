@@ -11,11 +11,15 @@
   ].map(function (x) { return { glyph: x[0], name: x[1] }; });
   function fold(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase(); }
 
-  /* Dữ liệu nhúng lúc build chỉ gồm [tên, số thứ tự cung], đã xếp theo vòng hoàng đạo. Ngày sinh không có trong trang. */
+  /* Dữ liệu nhúng lúc build: {bans:[[tên, màu]], people:[[tên, số cung, [số ban, ...]]]}, đã xếp theo vòng hoàng đạo. Không có ngày sinh. */
   function load() {
-    var el = document.getElementById("starmap-data"), arr;
-    try { arr = JSON.parse(el ? el.textContent : "[]"); } catch (e) { arr = []; }
-    var users = arr.map(function (r) { return { name: r[0], sign: SIGNS[r[1]], fold: fold(r[0]) }; });
+    var el = document.getElementById("starmap-data"), d;
+    try { d = JSON.parse(el ? el.textContent : "{}"); } catch (e) { d = {}; }
+    var users = (d.people || []).map(function (r) {
+      var bans = (r[2] || []).map(function (i) { return d.bans[i]; }).filter(Boolean)
+        .map(function (b) { return { name: b[0], color: b[1] }; });
+      return { name: r[0], sign: SIGNS[r[1]], bans: bans, fold: fold(r[0]) };
+    });
     if (!users.length) return Promise.reject(new Error("Chưa có dữ liệu bản đồ sao, hãy chạy lại build_pages.py"));
     return Promise.resolve(users);
   }
@@ -100,26 +104,42 @@
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(st); } });
     }
 
-    function placeLabel(st) {
-      var lab = st.g.querySelector(".star-label"); if (!lab) return;
-      var W = svg.getBoundingClientRect().width, k = W / VB.w, w = +lab.dataset.w,
-          sx = (st.x - VB.x) * k, sy = (st.y - VB.y) * k,
-          dx = (sx + 18 + w < W) ? 18 : -18 - w, dy = sy > 56 ? -44 : 16;
-      lab.setAttribute("transform", "scale(" + (1 / k).toFixed(4) + ") translate(" + dx + " " + dy + ")");
+    /* Popup thông tin: tên + ban công tác (chữ màu theo ban) */
+    var modal = document.createElement("div");
+    modal.className = "star-modal"; modal.hidden = true;
+    modal.innerHTML = '<div class="star-modal-card" role="dialog" aria-modal="true" aria-labelledby="smName">' +
+      '<button type="button" class="star-modal-close" aria-label="Đóng">&times;</button>' +
+      '<p class="star-modal-label">Họ và tên</p><h3 id="smName" class="star-modal-name"></h3>' +
+      '<p class="star-modal-label">Ban công tác</p><div class="star-modal-bans"></div></div>';
+    document.body.appendChild(modal);
+    var card = modal.firstChild, mName = modal.querySelector("#smName"), mBan = modal.querySelector(".star-modal-bans"),
+        mClose = modal.querySelector(".star-modal-close");
+    function closePopup() {
+      if (modal.hidden) return;
+      modal.hidden = true; document.removeEventListener("keydown", onKey);
+      if (picked) { var g = picked.g; g.classList.remove("is-picked"); g.querySelectorAll(".star-ring-wrap").forEach(function (n) { n.remove(); }); picked = null; g.focus({ preventScroll: true }); }
     }
+    function onKey(e) {
+      if (e.key === "Escape") closePopup();
+      else if (e.key === "Tab") { e.preventDefault(); mClose.focus(); } /* chỉ có một nút để focus */
+    }
+    modal.addEventListener("click", function (e) { if (e.target === modal || e.target === mClose) closePopup(); });
 
     function pick(st, scroll) {
-      if (picked) { picked.g.classList.remove("is-picked"); picked.g.querySelectorAll(".star-ring,.star-label").forEach(function (n) { n.remove(); }); }
+      if (picked) { picked.g.classList.remove("is-picked"); picked.g.querySelectorAll(".star-ring-wrap").forEach(function (n) { n.remove(); }); }
       picked = st; st.g.classList.add("is-picked"); gStars.appendChild(st.g);
       var ring = mk("g", { class: "star-ring-wrap" }, st.g); mk("circle", { class: "star-ring", r: 12 }, ring);
-      var lab = mk("g", { class: "star-label" }, st.g), rect = mk("rect", { rx: 6, height: 28 }, lab),
-          t = mk("text", { x: 10, y: 19 }, lab);
-      t.textContent = st.u.name + "  ·  " + st.u.sign.glyph + " " + st.u.sign.name;
-      var w = Math.ceil(t.getComputedTextLength()) + 20; rect.setAttribute("width", w); lab.dataset.w = w;
-      placeLabel(st);
-      if (scroll) svg.parentNode.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (scroll) svg.parentNode.scrollIntoView({ block: "center" });
+      var u = st.u, bs = u.bans;
+      mName.textContent = u.name; mBan.textContent = "";
+      (bs.length ? bs : [null]).forEach(function (b) {
+        var p = document.createElement("p"); p.className = "star-modal-ban" + (b ? "" : " is-empty");
+        p.textContent = b ? b.name : "Chưa cập nhật"; if (b) p.style.color = b.color; mBan.appendChild(p);
+      });
+      card.style.setProperty("--bar", bs.length > 1 ? "linear-gradient(90deg," + bs.map(function (b) { return b.color; }).join(",") + ")" : (bs[0] ? bs[0].color : "rgba(255,255,255,.25)"));
+      card.style.setProperty("--ban", bs[0] ? bs[0].color : "#00f0ff");
+      modal.hidden = false; document.addEventListener("keydown", onKey); mClose.focus();
     }
-    window.addEventListener("resize", function () { if (picked) placeLabel(picked); });
 
     /* nút chuyển chế độ logo <-> dải ngân hà */
     btn.disabled = false; btn.textContent = "Xem dải ngân hà BIT";
@@ -130,7 +150,6 @@
         s.x = galaxy ? s.gx : s.lx; s.y = galaxy ? s.gy : s.ly;
         s.g.style.transform = "translate(" + s.x + "px," + s.y + "px)";
       });
-      if (picked) placeLabel(picked);
     });
 
     /* tìm tên: gợi ý ngay khi gõ, không cần gõ dấu */

@@ -921,9 +921,58 @@ def build_ban(ban):
 # TRANG CHỦ
 # =============================================================================
 
+def _fold(t):
+    """Bỏ dấu, hạ chữ thường, gộp ký tự lạ thành khoảng trắng (để so khớp tên Ban linh hoạt)."""
+    import unicodedata
+    t = unicodedata.normalize("NFD", str(t).replace("đ", "d").replace("Đ", "D"))
+    t = "".join(c for c in t if unicodedata.category(c) != "Mn").lower()
+    return re.sub(r"[^a-z0-9]+", " ", t).strip()
+
+
+def _read_csv_rows(path):
+    """Đọc CSV với mọi kiểu lưu thường gặp của Excel: UTF-8 (có/không BOM), UTF-16, ANSI Windows-1258/1252,
+    dấu phân cách ',' hoặc ';' (Excel bản tiếng Việt hay dùng ';')."""
+    import csv, io, unicodedata
+    raw = open(path, "rb").read()
+    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        encodings = ["utf-16"]
+    else:
+        encodings = ["utf-8-sig", "cp1258", "cp1252"]
+    for enc in encodings:
+        try:
+            text = raw.decode(enc)
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        text = raw.decode("latin-1")
+        enc = "latin-1"
+    if enc not in ("utf-8-sig", "utf-16"):
+        print("  LƯU Ý: CSV không phải UTF-8 (đọc theo %s). Nên lưu lại bằng 'CSV UTF-8 (Comma delimited)' trong Excel." % enc)
+    text = unicodedata.normalize("NFC", text)
+    if "\ufffd" in text or re.search(r"[A-Za-zÀ-ỹ]\?[A-Za-zÀ-ỹ]", text.split("\n", 1)[-1]):
+        print("  CẢNH BÁO: có ký tự bị hỏng/dấu '?' trong tên, nhiều khả năng file bị lưu ANSI làm mất dấu. "
+              "Hãy lưu lại bằng 'CSV UTF-8 (Comma delimited)'.")
+    first = text.split("\n", 1)[0]
+    delim = ";" if first.count(";") > first.count(",") else ("\t" if first.count("\t") > first.count(",") else ",")
+    return list(csv.reader(io.StringIO(text, newline=""), delimiter=delim))
+
+
+def _parse_dm(dob):
+    """Lấy (ngày, tháng) từ ô ngày sinh. Hỗ trợ: 2006-06-11 00:00:00 (Excel/ISO), 11/06/2006, 11-06-2006, '8 /9/2006'."""
+    t = re.sub(r"\s+", "", dob.split()[0] if re.match(r"^\d{4}-", dob) else dob)
+    m = re.match(r"^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})", t)       # năm-tháng-ngày
+    if m:
+        return int(m.group(3)), int(m.group(2))
+    m = re.match(r"^(\d{1,2})[-/.](\d{1,2})(?:[-/.]\d{2,4})?$", t)   # ngày/tháng[/năm]
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    raise ValueError(dob)
+
+
 def starmap_csv():
-    """Đọc CSV lúc build và nhúng vào trang CHỈ tên + số thứ tự cung hoàng đạo (đã xếp theo vòng hoàng đạo).
-    Ngày sinh không đi vào HTML. Nên đặt CSV ở tools/ (cạnh file này) thay vì assets/ để không bị public."""
+    """Đọc CSV lúc build, nhúng vào trang CHỈ: tên, số thứ tự cung hoàng đạo, ban công tác (kèm màu ban).
+    Ngày sinh không đi vào HTML. Nên đặt CSV ở tools/ (cạnh file này) để không bị public."""
     import csv, datetime, json
     here = os.path.dirname(os.path.abspath(__file__))
     for path in (os.path.join(here, "Danh_sach_sinh_nhat.csv"),
@@ -932,24 +981,59 @@ def starmap_csv():
             break
     else:
         print("  CẢNH BÁO: không thấy Danh_sach_sinh_nhat.csv, bản đồ sao sẽ trống.")
-        return "[]"
+        return "{}"
+    # Mỗi ban nhận ra bằng: tên đầy đủ, tên bỏ chữ "Ban", mã ngắn (TC-XD...), tên viên đá (Ruby...)
+    alias = {}
+    for i, bn in enumerate(BANS):
+        for k in (bn["name"], re.sub(r"^Ban\s+", "", bn["name"]), bn["short"], bn["gem"]):
+            alias[_fold(k)] = i
     starts = [(3, 21), (4, 20), (5, 21), (6, 21), (7, 23), (8, 23), (9, 23), (10, 23), (11, 22), (12, 22), (1, 20), (2, 19)]
     ref = datetime.date(2000, 3, 21)
-    rows = []
-    with open(path, encoding="utf-8-sig", newline="") as fh:
-        for r in list(csv.reader(fh))[1:]:
-            try:
-                name, d, m = r[0].strip(), *map(int, r[1].strip().split("/")[:2])
-                day = datetime.date(2000, m, d)
-            except (IndexError, ValueError):
-                continue
-            if not name:
-                continue
-            key = (day - ref).days % 366
-            sign = max(i for i, (sm, sd) in enumerate(starts) if (day - ref).days % 366 >= (datetime.date(2000, sm, sd) - ref).days % 366)
-            rows.append((key, name, sign))
+    off = [(datetime.date(2000, m, d) - ref).days % 366 for m, d in starts]
+    people, unknown, lines = {}, {}, 0   # people: (tên đã bỏ dấu, ngày sinh) -> thông tin 1 người
+    data = _read_csv_rows(path)
+    head = [_fold(c) for c in data[0]] if data else []
+    c_dob = next((i for i, c in enumerate(head) if "ngay sinh" in c), 1)
+    c_ban = next((i for i, c in enumerate(head) if c == "ban" or c.startswith("ban ")), 2)
+    if "ban" not in " ".join(head):
+        print("  CẢNH BÁO: CSV chưa có cột 'Ban'. Hãy thêm cột thứ 3 tên 'Ban' vào Danh_sach_sinh_nhat.csv.")
+    for r in data[1:]:
+        try:
+            name = " ".join(r[0].split())
+            dob = r[c_dob].strip()
+            d, m = _parse_dm(dob)
+            day = datetime.date(2000, m, d)
+        except (IndexError, ValueError):
+            continue
+        if not name:
+            continue
+        lines += 1
+        k = (day - ref).days % 366
+        # Cùng tên + cùng ngày sinh = cùng một người (dòng lặp hoặc người làm nhiều ban).
+        # Cùng tên nhưng khác ngày sinh = hai người khác nhau, vẫn hai ngôi sao.
+        person = people.setdefault((_fold(name), dob), {"key": k, "name": name, "sign": max(i for i in range(12) if k >= off[i]), "bans": []})
+        raw = r[c_ban].strip() if len(r) > c_ban else ""
+        if not raw:
+            continue
+        ban = alias.get(_fold(raw), -1)
+        if ban < 0:
+            unknown.setdefault(raw, []).append(name)
+        elif ban not in person["bans"]:      # dòng trùng hệt (cùng ban) chỉ tính một lần
+            person["bans"].append(ban)
+    rows = [(v["key"], v["name"], v["sign"], sorted(v["bans"])) for v in people.values()]
+    empty = sum(1 for x in rows if not x[3])
+    multi = [x[1] for x in rows if len(x[3]) > 1]
+    if lines > len(rows):
+        print("  GỘP: %d dòng CSV -> %d người (dòng trùng đã gộp, một người nhiều ban thì hiện đủ các ban)." % (lines, len(rows)))
+    if multi:
+        print("  NHIỀU BAN: %d người: %s" % (len(multi), ", ".join(multi[:5]) + ("..." if len(multi) > 5 else "")))
+    if empty:
+        print("  LƯU Ý: %d người chưa có Ban (popup sẽ hiện 'Chưa cập nhật')." % empty)
+    for raw, who in unknown.items():
+        print("  CẢNH BÁO: Ban '%s' không khớp 4 ban nào (%s)." % (raw, ", ".join(who[:3])))
     rows.sort(key=lambda x: (x[0], x[1]))
-    return json.dumps([[n, s] for _, n, s in rows], ensure_ascii=False).replace("</", "<\\/")
+    out = {"bans": [[bn["name"], bn["color"]] for bn in BANS], "people": [[n, s, b] for _, n, s, b in rows]}
+    return json.dumps(out, ensure_ascii=False).replace("</", "<\\/")
 
 
 def build_home():
@@ -1080,7 +1164,7 @@ def build_home():
 <section class="section" id="bit-star-map">
   <div class="container text-center">
     <div class="section-head mx-auto reveal">
-      <p class="kicker">Hành trình bắt đầu từ một vì sao xa lạ</p>
+      <p class="kicker">Bản đồ sao cá nhân</p>
       <h2 style="font-size: clamp(2rem, 5vw, 3rem); text-shadow: 0 0 15px var(--resd-cyan);">Những vì tinh tú BIT</h2>
       <p style="color: var(--resd-cyan); font-style: italic; margin-top: 10px;">
         "Cho dù bạn là ai, khi bạn chọn đồng hành cùng BIT, bạn sẽ luôn là một vì sao sáng nhất trong vũ trụ BIT."
@@ -1095,7 +1179,6 @@ def build_home():
       </div>
       <button class="btn-gem" id="toggleShapeBtn" type="button" disabled>Đang tải...</button>
     </div>
-
     <div class="starmap-container reveal">
       <svg id="starmap-svg" viewBox="-20 -20 1029 375" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo BIT được tạo thành từ các ngôi sao, mỗi ngôi sao là một thành viên"></svg>
       <div id="starmapLoading" class="starmap-loading" role="status"><span id="loadingText">Đang tải bản đồ sao...</span></div>
