@@ -47,7 +47,10 @@
         "Kết quả của đợt tuyển sẽ được bật mí trong vài ngày tới, hãy cùng chờ đón nhé.",
         "Giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào.",
       ],
-      cta: "Khám phá các hoạt động khác tại Fanpage Khoa trong lúc chờ",
+         cta: {
+    text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
+    href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
+  },
     },
     closed: {
       tone: "closed",
@@ -57,7 +60,10 @@
         "Cổng đăng ký vòng CV của hành trình lần này đã chính thức khép lại. Dù bạn đã kịp ghi danh hay lỡ hẹn ở những giây cuối cùng, hãy tin rằng mỗi nỗ lực hướng về phía các vì sao đều là một trải nghiệm đáng giá.",
         "Cơ hội đồng hành cùng Đoàn - Hội vẫn luôn rộng mở ở những chặng đường phía trước. Hẹn gặp lại bạn tại những tọa độ rực rỡ hơn nhé!",
       ],
-      cta: "Ghé thăm Fanpage Khoa để tham quan và không bỏ lỡ các chương trình thú vị khác",
+        cta: {
+        text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
+        href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
+    },
     },
   };
 
@@ -107,7 +113,7 @@
 
     const footer = el("div", "resd-popup__footer");
     if (CFG.fanpageUrl) {
-      const cta = el("a", "btn-gem resd-popup__cta", data.cta);
+      const cta = el("a", "btn-gem resd-popup__cta", data.cta.text || data.cta);
       cta.href = CFG.fanpageUrl;
       cta.target = "_blank";
       cta.rel = "noopener";
