@@ -472,7 +472,7 @@ ALL_MANGS = [(ban, m) for ban in BANS for m in ban["mangs"]]
 
 def head(title, desc, css_vars="", extra_js=()):
     scripts = "\n".join(
-        '  <script defer src="js/%s"></script>' % s for s in ("config.js", "site.js") + tuple(extra_js)
+        '  <script defer src="js/%s"></script>' % s for s in ("config.js", "site.js", "popup.js") + tuple(extra_js)
     )
     style = ('\n  <style>:root { %s }</style>' % css_vars) if css_vars else ""
     return f"""<!doctype html>
