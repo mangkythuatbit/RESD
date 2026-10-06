@@ -41,11 +41,11 @@
     submitted: {
       tone: "success",
       icon: ICON_CHECK,
-      title: "Cảm ơn bạn đã lựa chọn đồng hành cùng BIT!",
+      title: "Đã có kết quả vòng CV R.E.S.D 2026",
       paragraphs: [
         "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ chiếc đơn của bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
-        "Kết quả của đợt tuyển sẽ được bật mí trong vài ngày tới, hãy cùng chờ đón nhé.",
-        "Giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào.",
+        "Kết quả của đợt tuyển đã được công bố thông qua email của bạn",
+        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
       ],
          cta: {
     text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
@@ -55,10 +55,11 @@
     closed: {
       tone: "closed",
       icon: ICON_STAR,
-      title: "Oops, hành trình này có vẻ phải dừng ở đây rồi",
+      title: "Đã có kết quả vòng CV R.E.S.D 2026",
       paragraphs: [
-        "Cổng đăng ký vòng CV của hành trình lần này đã chính thức khép lại. Dù bạn đã kịp ghi danh hay lỡ hẹn ở những giây cuối cùng, hãy tin rằng mỗi nỗ lực hướng về phía các vì sao đều là một trải nghiệm đáng giá.",
-        "Cơ hội đồng hành cùng Đoàn - Hội vẫn luôn rộng mở ở những chặng đường phía trước. Hẹn gặp lại bạn tại những tọa độ rực rỡ hơn nhé!",
+        "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ chiếc đơn của bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
+        "Kết quả của đợt tuyển đã được công bố thông qua email của bạn",
+        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
       ],
         cta: {
         text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
