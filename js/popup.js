@@ -48,7 +48,7 @@
         "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
       ],
          cta: {
-    text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
+    text: 'Tìm hiểu thêm về BIT',
     href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
   },
     },
@@ -62,7 +62,7 @@
         "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
       ],
         cta: {
-        text: 'Ghé thăm Fanpage BIT để tham quan và không bỏ lỡ các chương trình thú vị khác',
+        text: 'Tìm hiểu thêm về BIT',
         href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
     },
     },
