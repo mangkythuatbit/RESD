@@ -28,7 +28,7 @@ window.RESD_CONFIG = {
   /* Hạn nhận đơn theo booklet R.E.S.D 2026. */
   event: {
     title: "Kết quả R.E.S.D 2026 sẽ sớm được cập nhật tại hòm thư của bạn sau",
-    date: "2026-10-14T23:59:00+07:00",
+    date: "2026-10-14T23:59:00+07000",
     note: "",
   },
 };
