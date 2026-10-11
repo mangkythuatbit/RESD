@@ -1074,7 +1074,7 @@ def build_home():
         <div class="row gy-4 align-items-stretch">
           <div class="col-lg-6">
             <div class="countdown reveal">
-              <h3>Điểm hẹn gần nhất</h3>
+              <h3>Bạn đã sẵn sàng để trở thành vì tinh tú của dải ngân hà BIT hay chưa?</h3>
               <p class="when" data-event-title>Tự tin chia sẻ cùng BIT tại vòng phỏng vấn</p>
               <div class="clock" data-countdown>
                 <div><b data-unit="d">–</b><span>ngày</span></div>
