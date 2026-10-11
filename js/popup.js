@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Pop-up thông báo toàn cổng R.E.S.D
+ * Pop-up thông báo toàn cổng R.E.S.D & Góp ý phỏng vấn (Chung một luồng)
  * Thứ tự nạp: config.js -> site.js -> popup.js -> (main.js | test-dinh-huong.js)
  *
  * Trạng thái:
@@ -23,6 +23,9 @@
   const KEY_SUBMITTED = "has_submitted";
   const KEY_DISMISSED = "resd_popup_dismissed";
 
+  // URL nhận dữ liệu Google Sheets
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvZS4y1IKz0aWCL4W-z05jJpNSxYUP7hsskMmwgXX2td3C5DU7mr0t6fBhzfcwwTkt/exec';
+
   /* --- Storage an toàn (chế độ riêng tư có thể chặn) --------------------- */
   const safe = {
     get(area, key) { try { return window[area].getItem(key); } catch (e) { return null; } },
@@ -41,32 +44,61 @@
     submitted: {
       tone: "success",
       icon: ICON_CHECK,
-      title: "Đã có kết quả vòng CV R.E.S.D 2026",
+      title: "Cảm ơn bạn đã đến với BIT",
       paragraphs: [
-        "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ chiếc đơn của bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
-        "Kết quả của đợt tuyển đã được công bố thông qua email của bạn",
-        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
+        "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
+        "Những chia sẻ hôm nay của bạn giúp chúng mình hiểu hơn về con người và cá tính của bạn, vì chúng ta là một đôi ngũ, và BIT là một gia đình. Hãy cùng nhau tạo nên những giá trị tuyệt vời trong tương lai nhé",
+        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn sớm đi cùng bạn trong chặng hành trình tiếp theo cùng BIT!",
       ],
          cta: {
-    text: 'Tìm hiểu thêm về BIT',
+    text: 'Tìm hiểu về BIT',
     href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
   },
     },
     closed: {
       tone: "closed",
       icon: ICON_STAR,
-      title: "Đã có kết quả vòng CV R.E.S.D 2026",
+      title: "Cảm ơn bạn đã đến với BIT",
       paragraphs: [
-        "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ chiếc đơn của bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
-        "Kết quả của đợt tuyển đã được công bố thông qua email của bạn",
-        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn gặp lại bạn tại vòng phỏng vấn sắp tới!",
+        "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
+        "Những chia sẻ hôm nay của bạn giúp chúng mình hiểu hơn về con người và cá tính của bạn, vì chúng ta là một đôi ngũ, và BIT là một gia đình. Hãy cùng nhau tạo nên những giá trị tuyệt vời trong tương lai nhé",
+        "Cho dù thế nào hãy giữ vững ngọn lửa tự tin này bạn nhé, vì \"Even if you miss, you will still live among the bestITers\", dẫu có chút lỡ hẹn, bạn vẫn luôn là một phần của thế hệ sinh viên BIT đầy bản lĩnh và tự hào. Hẹn sớm đi cùng bạn trong chặng hành trình tiếp theo cùng BIT!",
       ],
         cta: {
-        text: 'Tìm hiểu thêm về BIT',
+        text: 'Tìm hiểu về BIT',
         href: 'https://facebook.com/BIT.UEH', // Thay link Fanpage của bạn vào đây
     },
     },
   };
+
+  /* --- HTML Form Đánh giá --- */
+  const FEEDBACK_FORM_HTML = `
+    <div id="feedbackSection" style="display: none; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--resd-line); text-align: left;">
+      <h3 style="margin: 0 0 10px; font-size: 1.1rem; color: var(--resd-cyan);">Cảm ơn bạn đã chia sẻ cùng BIT</h3>
+      <p style="margin: 0 0 16px; color: var(--resd-muted); font-size: .9rem;">Hãy để lại đánh giá và góp ý để BIT ngày càng hoàn thiện hơn nhé!</p>
+      <form id="interviewFeedbackForm">
+        <div class="form-group">
+          <label style="display: block; margin-bottom: 6px; font-weight: 600; color: var(--resd-text); font-size: .9rem;">Đánh giá buổi phỏng vấn</label>
+          <div class="star-rating" style="display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 6px;">
+            <input type="radio" name="rating" value="5" id="star5" required style="display: none;"><label for="star5" title="Tuyệt vời" style="font-size: 1.6rem; color: var(--resd-line-strong); cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;">★</label>
+            <input type="radio" name="rating" value="4" id="star4" style="display: none;"><label for="star4" title="Tốt" style="font-size: 1.6rem; color: var(--resd-line-strong); cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;">★</label>
+            <input type="radio" name="rating" value="3" id="star3" style="display: none;"><label for="star3" title="Bình thường" style="font-size: 1.6rem; color: var(--resd-line-strong); cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;">★</label>
+            <input type="radio" name="rating" value="2" id="star2" style="display: none;"><label for="star2" title="Tệ" style="font-size: 1.6rem; color: var(--resd-line-strong); cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;">★</label>
+            <input type="radio" name="rating" value="1" id="star1" style="display: none;"><label for="star1" title="Rất tệ" style="font-size: 1.6rem; color: var(--resd-line-strong); cursor: pointer; transition: color 0.2s ease, transform 0.2s ease;">★</label>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 14px;">
+          <label style="display: block; margin-bottom: 6px; font-weight: 600; color: var(--resd-text); font-size: .9rem;">Góp ý của bạn</label>
+          <textarea name="comment" rows="3" placeholder="Chia sẻ cảm nghĩ hoặc góp ý..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--resd-line-strong); background: rgba(11, 30, 52, 0.5); color: var(--resd-text); font-family: inherit; font-size: .9rem; resize: vertical; box-sizing: border-box;"></textarea>
+        </div>
+        <div id="feedbackMessage" style="display: none; margin-top: 10px; font-size: .85rem; color: var(--resd-cyan);"></div>
+        <div style="display: flex; gap: 10px; margin-top: 16px;">
+           <button type="button" id="cancelFeedbackBtn" class="btn-ghost" style="flex: 1; padding: 10px; justify-content: center;">Hủy</button>
+           <button type="submit" id="submitFeedbackBtn" class="btn-gem" style="flex: 1; padding: 10px; justify-content: center;">Gửi đánh giá</button>
+        </div>
+      </form>
+    </div>
+  `;
 
   /* --- Dựng và điều khiển pop-up ---------------------------------------- */
   let root = null;
@@ -113,14 +145,42 @@
     scroller.append(badge, title, desc);
 
     const footer = el("div", "resd-popup__footer");
+    footer.style.display = 'flex';
+    footer.style.flexWrap = 'wrap';
+    footer.style.gap = '10px';
+    footer.style.alignItems = 'center';
+
     if (CFG.fanpageUrl) {
       const cta = el("a", "btn-gem resd-popup__cta", data.cta.text || data.cta);
       cta.href = CFG.fanpageUrl;
       cta.target = "_blank";
       cta.rel = "noopener";
+      // Bỏ set cứng 100% để nút có thể đứng cạnh nút Góp ý
+      cta.style.width = 'auto'; 
+      cta.style.flex = '1';
       footer.appendChild(cta);
     }
+    
+    // Nút mở form góp ý
+    const feedbackBtn = el("button", "btn-ghost", "Góp ý phỏng vấn");
+    feedbackBtn.type = "button";
+    feedbackBtn.style.flex = '1';
+    feedbackBtn.style.justifyContent = 'center';
+    feedbackBtn.style.padding = '14px 22px';
+    feedbackBtn.addEventListener("click", () => {
+        const fbSection = document.getElementById('feedbackSection');
+        if (fbSection.style.display === 'none') {
+            fbSection.style.display = 'block';
+            scroller.scrollTop = scroller.scrollHeight; // Cuộn xuống phần form
+            feedbackBtn.style.display = 'none'; // Ẩn nút góp ý khi form đã mở
+        }
+    });
+    footer.appendChild(feedbackBtn);
+
     if (footer.childNodes.length) scroller.appendChild(footer);
+    
+    // Thêm khối Form Góp ý (ẩn mặc định)
+    scroller.insertAdjacentHTML('beforeend', FEEDBACK_FORM_HTML);
 
     card.append(closeBtn, scroller);
     overlay.appendChild(card);
@@ -131,6 +191,74 @@
     return overlay;
   }
 
+  function bindFeedbackFormEvents() {
+    const feedbackForm = document.getElementById('interviewFeedbackForm');
+    const feedbackMsg = document.getElementById('feedbackMessage');
+    const cancelBtn = document.getElementById('cancelFeedbackBtn');
+    const fbSection = document.getElementById('feedbackSection');
+    const originalFeedbackBtn = root.querySelector('button.btn-ghost');
+
+    if (!feedbackForm) return;
+
+    // Xử lý nút Hủy
+    cancelBtn.addEventListener('click', () => {
+        fbSection.style.display = 'none';
+        if (originalFeedbackBtn) originalFeedbackBtn.style.display = 'inline-flex';
+        feedbackForm.reset();
+        const checkedStar = feedbackForm.querySelector('input[type="radio"]:checked');
+        if(checkedStar) checkedStar.checked = false;
+        feedbackMsg.style.display = 'none';
+    });
+
+    feedbackForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(feedbackForm);
+        const data = {
+            rating: formData.get('rating'),
+            comment: formData.get('comment')
+        };
+
+        const btnSubmit = document.getElementById('submitFeedbackBtn');
+        btnSubmit.textContent = 'Đang gửi...';
+        btnSubmit.disabled = true;
+
+        try {
+            const urlEncodedData = new URLSearchParams(data);
+
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: urlEncodedData
+            });
+
+            feedbackMsg.textContent = 'Cảm ơn bạn đã gửi đánh giá!';
+            feedbackMsg.style.display = 'block';
+            feedbackMsg.style.color = 'var(--resd-cyan)';
+            feedbackForm.reset();
+            
+            const checkedStar = feedbackForm.querySelector('input[type="radio"]:checked');
+            if(checkedStar) checkedStar.checked = false;
+
+            // Đóng toàn bộ popup sau khi gửi xong
+            setTimeout(close, 2000);
+            
+        } catch (error) {
+            feedbackMsg.textContent = 'Đã có lỗi xảy ra, vui lòng thử lại.';
+            feedbackMsg.style.display = 'block';
+            feedbackMsg.style.color = '#ff8fa3';
+        } finally {
+            setTimeout(() => {
+                btnSubmit.textContent = 'Gửi đánh giá';
+                btnSubmit.disabled = false;
+            }, 2500);
+        }
+    });
+  }
+
   function onKey(event) {
     if (!root) return;
     if (event.key === "Escape") {
@@ -139,7 +267,7 @@
       return;
     }
     if (event.key !== "Tab") return;
-    const items = root.querySelectorAll("button, a[href]");
+    const items = root.querySelectorAll("button, a[href], input, textarea");
     if (!items.length) return;
     const first = items[0];
     const last = items[items.length - 1];
@@ -156,9 +284,30 @@
     if (root) return;
     lastFocus = document.activeElement;
     root = build(hasSubmitted() ? CONTENT.submitted : CONTENT.closed);
+    
+    // Thêm CSS xử lý hover của rating stars
+    if (!document.getElementById('feedback-rating-styles')) {
+        const style = document.createElement('style');
+        style.id = 'feedback-rating-styles';
+        style.textContent = `
+          .star-rating label:hover,
+          .star-rating label:hover ~ label,
+          .star-rating input:checked ~ label {
+            color: #ffd76a !important;
+          }
+          .star-rating label:hover {
+            transform: scale(1.1);
+          }
+        `;
+        document.head.appendChild(style);
+    }
+
     document.body.appendChild(root);
     document.body.classList.add("has-resd-popup");
     document.addEventListener("keydown", onKey, true);
+    
+    bindFeedbackFormEvents();
+    
     root.firstChild.focus({ preventScroll: true });
   }
 

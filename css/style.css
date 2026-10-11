@@ -1025,3 +1025,45 @@ body.has-resd-popup { overflow: hidden; }
   .resd-popup__card { border-radius: 16px; }
 }
 @media print { .resd-popup { display: none !important; } }
+/* interview_feedback.css */
+/* Thêm CSS cho phần đánh giá sao (Star Rating) */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.star-rating input {
+  display: none;
+}
+.star-rating label {
+  font-size: 2rem;
+  color: var(--resd-line-strong);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #ffd76a;
+}
+.star-rating label:hover {
+  transform: scale(1.1);
+}
+.is-feedback .resd-popup__title {
+  color: var(--resd-cyan);
+}
+.is-feedback {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.is-feedback.is-active {
+  opacity: 1;
+}
+.is-feedback .resd-popup__card {
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.is-feedback.is-active .resd-popup__card {
+  transform: translateY(0) scale(1);
+}
