@@ -44,7 +44,7 @@
     submitted: {
       tone: "success",
       icon: ICON_CHECK,
-      title: "Cảm ơn bạn đã đến với BIT",
+      title: "Chào mừng bạn đã thành công gia nhập BIT",
       paragraphs: [
         "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
         "Những chia sẻ hôm nay của bạn giúp chúng mình hiểu hơn về con người và cá tính của bạn, vì chúng ta là một đôi ngũ, và BIT là một gia đình. Hãy cùng nhau tạo nên những giá trị tuyệt vời trong tương lai nhé",
@@ -58,7 +58,7 @@
     closed: {
       tone: "closed",
       icon: ICON_STAR,
-      title: "Cảm ơn bạn đã đến với BIT",
+      title: "Chào mừng bạn đã thành công gia nhập BIT",
       paragraphs: [
         "Chúc mừng bạn đã hoàn thành bước chân đầu tiên trên hành trình chinh phục thử thách mới tại BIT! Sự nhiệt tình và năng lượng thanh xuân từ bạn chính là nguồn động lực lớn cho chúng mình trên chặng đường đồng hành cùng nhau sắp tới.",
         "Những chia sẻ hôm nay của bạn giúp chúng mình hiểu hơn về con người và cá tính của bạn, vì chúng ta là một đôi ngũ, và BIT là một gia đình. Hãy cùng nhau tạo nên những giá trị tuyệt vời trong tương lai nhé",
