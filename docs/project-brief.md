@@ -5,6 +5,7 @@ Cổng thông tin tĩnh giới thiệu chương trình R.E.S.D của Đoàn - H�
 
 Trang phục vụ mục 3.2 của kế hoạch: "Giới thiệu Website Đoàn - Hội khoa và Trải nghiệm bài kiểm tra định hướng", dự kiến 23/09/2026, công bố trực tuyến trên Fanpage.
 
+aaaa
 ## Định vị
 Đây **không phải** website của Đoàn - Hội khoa. Đoàn - Hội khoa đã có kênh riêng là Fanpage. Cổng này chỉ phục vụ một chương trình cụ thể là R.E.S.D, nên nội dung phải tránh trùng lặp: không đăng tin tức hoạt động thường kỳ, không đăng thông báo chung của khoa, không đóng vai trang chủ của Đoàn - Hội.
 
